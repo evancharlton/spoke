@@ -1,42 +1,17 @@
-import { Letter, Trie } from "../../trie";
-
-type Forfeit = {
-  move: "forfeit";
-};
-
-type Challenge = {
-  move: "challenge";
-};
-
-type AddLetter = {
-  move: "play";
-  letter: Letter;
-};
-
-type ShowWord = {
-  move: "show";
-  word: string;
-};
+import { Forfeit, Reveal, AddLetter, Challenge } from "../../moves";
+import { Letter, nodeOptions, Trie, walk } from "../../trie";
 
 export type Opponent = {
   name: string;
-  challenge: (trie: Trie, current: string) => Forfeit | ShowWord;
-  play: (trie: Trie, current: string) => AddLetter | Forfeit | Challenge;
-};
+  challenge: (trie: Trie, current: string) => Promise<Forfeit | Reveal>;
+  play: (
+    trie: Trie,
+    current: string
+  ) => Promise<AddLetter | Forfeit | Challenge>;
+  validate: (trie: Trie, word: string) => Promise<boolean>;
 
-const walk = (trie: Trie, current: string): Trie | undefined => {
-  let node: Trie | undefined = trie;
-  for (let i = 0; i < current.length; i += 1) {
-    if (!node) {
-      return undefined;
-    }
-    node = node[current[i] as Letter];
-  }
-  return node;
-};
-
-const nodeOptions = (trie: Trie): Letter[] => {
-  return Object.keys(trie).filter((v) => v !== "_") as Letter[];
+  // TODO: Remove this
+  all: (trie: Trie, current: string) => string[];
 };
 
 const firstWord = (trie: Trie): string => {
@@ -57,7 +32,7 @@ export const OPPONENTS: Record<string, Opponent> = {
   random: {
     name: "Tilfeldig",
 
-    challenge: (trie, current) => {
+    challenge: async (trie, current) => {
       const node = walk(trie, current);
       if (!node) {
         return { move: "forfeit" };
@@ -71,7 +46,9 @@ export const OPPONENTS: Record<string, Opponent> = {
       return { move: "show", word: firstWord(node) };
     },
 
-    play: (trie, current) => {
+    play: async (trie, current) => {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const node = walk(trie, current);
       if (!node) {
         return { move: "challenge" };
@@ -82,7 +59,31 @@ export const OPPONENTS: Record<string, Opponent> = {
       if (!letter) {
         return { move: "forfeit" };
       }
+
       return { move: "play", letter: letter as Letter };
+    },
+
+    validate: async (trie, word) => {
+      const node = walk(trie, word);
+      return !!node?._?.length;
+    },
+
+    all: (trie, current) => {
+      const expand = (node: Trie): string[] => {
+        if (node._?.length) {
+          return node._ ?? [];
+        }
+        return nodeOptions(node)
+          .map((letter) => (node[letter] ? expand(node[letter]) : []))
+          .flat();
+      };
+
+      const start = walk(trie, current);
+      if (!start) {
+        return [];
+      }
+
+      return expand(start) ?? [];
     },
   },
 } as const;

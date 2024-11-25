@@ -1,5 +1,4 @@
-import { createContext, useContext } from "react";
-import { Opponent, OPPONENTS } from "./opponents";
+import { OPPONENTS } from "./opponents";
 import { useParams } from "react-router-dom";
 
 export const useOpponent = () => {

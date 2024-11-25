@@ -1,5 +1,5 @@
 import "./App.css";
-import { HashRouter, Route, Routes, useParams } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import Page from "./components/Page";
 import LanguageSelector from "./components/LanguageSelector";
 import AppSetup from "./components/AppSetup";

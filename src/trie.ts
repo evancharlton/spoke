@@ -33,3 +33,18 @@ export type Trie = {
 };
 
 export type Letter = keyof Omit<Trie, "_">;
+
+export const walk = (trie: Trie, current: string): Trie | undefined => {
+  let node: Trie | undefined = trie;
+  for (let i = 0; i < current.length; i += 1) {
+    if (!node) {
+      return undefined;
+    }
+    node = node[current[i] as Letter];
+  }
+  return node;
+};
+
+export const nodeOptions = (trie: Trie): Letter[] => {
+  return Object.keys(trie).filter((v) => v !== "_") as Letter[];
+};
