@@ -1,9 +1,15 @@
-import { useState } from "react";
-import { usePlayContext } from "../Play";
+import { useEffect, useState } from "react";
+import { useGame } from "../GameLogic";
+import { useGameActions } from "../GameLogic/context";
 
 export const ChallengeDialog = () => {
-  const { current } = usePlayContext();
+  const { current } = useGame();
+  const { answerChallenge } = useGameActions();
   const [input, setInput] = useState(current);
+
+  useEffect(() => {
+    setInput(current);
+  }, [current]);
 
   return (
     <dialog ref={(d) => d?.showModal()}>
@@ -20,6 +26,13 @@ export const ChallengeDialog = () => {
         }}
         value={input}
       />
+      <button
+        onClick={() => {
+          answerChallenge!(input);
+        }}
+      >
+        &gt;
+      </button>
     </dialog>
   );
 };

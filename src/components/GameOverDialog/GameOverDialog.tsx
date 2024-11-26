@@ -1,26 +1,137 @@
-import { useOpponent } from "../OpponentSelector/context";
-import { usePlayContext } from "../Play";
+import { neverGuard } from "../../utils";
+import {
+  useCurrentPlayer,
+  useGame,
+  useNeighbors,
+  usePlayerId,
+} from "../GameLogic/context";
+import NaobLink from "../NaobLink";
+
+const Modal = ({ children }: { children: React.ReactNode }) => {
+  return <dialog ref={(dialog) => dialog?.showModal()}> {children}</dialog>;
+};
 
 export const GameOverDialog = () => {
-  const { winner, lastAction } = usePlayContext();
-  console.log(`TCL ~ GameOverDialog ~ lastAction:`, lastAction);
-  const opponent = useOpponent();
+  const loserId = useCurrentPlayer();
+  const { previous } = useNeighbors();
+  const playerId = usePlayerId();
+  const { resolution, current, endingWord } = useGame();
 
-  if (winner === 0) {
-    return (
-      <>
-        <h1>{opponent.name} wins</h1>
-        <div>
-          They were thinking of{" "}
-          {lastAction?.move === "show" ? lastAction.word : "???"}
-        </div>
-      </>
-    );
+  if (!resolution) {
+    return null;
   }
 
-  if (winner === 1) {
-    return <h1>You win</h1>;
-  }
+  switch (resolution) {
+    case "challenge -> fake word": {
+      if (loserId === playerId) {
+        return (
+          <Modal>
+            <h1>You lose</h1>
+            <p>You tried to use {endingWord}, which isn't a known word</p>
+          </Modal>
+        );
+      }
 
-  return null;
+      return (
+        <Modal>
+          <h1>{loserId} loses</h1>
+          <p>You tried to use {endingWord}, which isn't a known word</p>
+        </Modal>
+      );
+    }
+
+    case "challenge -> real word": {
+      if (loserId === playerId) {
+        return (
+          <Modal>
+            <h1>You lose</h1>
+            <p>
+              You challenged {previous} who was thinking of using {current} to
+              spell <NaobLink word={endingWord} />
+            </p>
+          </Modal>
+        );
+      }
+      return (
+        <Modal>
+          <h1>{loserId} loses</h1>
+          <p>
+            {loserId} challenged {previous} who was thinking of using {current}{" "}
+            to spell <NaobLink word={endingWord} />
+          </p>
+        </Modal>
+      );
+    }
+
+    case "false-victory": {
+      if (loserId === playerId) {
+        return (
+          <Modal>
+            <h1>You lose</h1>
+            <p>
+              You claimed {current} was a word, but it isn't (however, it could
+              be used to spell <NaobLink word={endingWord} />)
+            </p>
+          </Modal>
+        );
+      }
+      return (
+        <Modal>
+          <h1>{loserId} loses</h1>
+          <p>
+            {loserId} claimed {current} was a word, but it isn't (however, it
+            could be used to spell <NaobLink word={endingWord} />)
+          </p>
+        </Modal>
+      );
+    }
+
+    case "word-spelled": {
+      if (loserId === playerId) {
+        return (
+          <Modal>
+            <h1>You lose</h1>
+            <p>
+              You spelled <NaobLink word={endingWord} />, which is a real word
+            </p>
+          </Modal>
+        );
+      }
+      return (
+        <Modal>
+          <h1>{loserId} loses</h1>
+          <p>
+            They spelled <NaobLink word={endingWord} />, which is a real word
+          </p>
+        </Modal>
+      );
+    }
+
+    case "overlooked-word": {
+      if (loserId === playerId) {
+        return (
+          <Modal>
+            <h1>You lose</h1>
+            <p>
+              You failed to notice that <NaobLink word={endingWord} /> was
+              previously spelled in {current}
+            </p>
+          </Modal>
+        );
+      }
+      return (
+        <Modal>
+          <h1>{loserId} loses</h1>
+          <p>
+            {loserId} failed to notice that <NaobLink word={endingWord} /> was
+            previously spelled in {current}
+          </p>
+        </Modal>
+      );
+    }
+
+    default: {
+      return neverGuard(resolution, null);
+    }
+  }
 };

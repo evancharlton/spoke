@@ -1,4 +1,5 @@
 import { Link, Outlet, useParams } from "react-router-dom";
+import { PlayersContext } from "./context";
 
 export const OpponentSelector = () => {
   const { opponentId } = useParams();
@@ -7,10 +8,13 @@ export const OpponentSelector = () => {
     return (
       <>
         <Link to="./random">Random</Link>
-        <Link to="./perfect">Perfect</Link>
       </>
     );
   }
 
-  return <Outlet />;
+  return (
+    <PlayersContext.Provider value={["human", opponentId]}>
+      <Outlet />
+    </PlayersContext.Provider>
+  );
 };

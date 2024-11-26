@@ -1,4 +1,4 @@
-import { usePlayContext } from "../Play";
+import { useGameActions } from "../GameLogic/context";
 import classes from "./Keyboard.module.css";
 
 const ALPHABET = [
@@ -8,7 +8,7 @@ const ALPHABET = [
 ] as const;
 
 export const Keyboard = () => {
-  const { addLetter, player, winner } = usePlayContext();
+  const { addLetter, myTurn } = useGameActions();
 
   return (
     <div className={classes.keyboard}>
@@ -16,9 +16,9 @@ export const Keyboard = () => {
         <div key={`row-${i}`} className={classes.row}>
           {row.map((letter) => (
             <button
-              disabled={player !== "human" || winner !== undefined}
+              disabled={!myTurn}
               key={letter}
-              onClick={() => addLetter(letter)}
+              onClick={() => addLetter!(letter)}
             >
               {letter}
             </button>

@@ -1,14 +1,15 @@
-import { usePlayContext } from "../Play";
+import { useGameActions } from "../GameLogic/context";
 
 export const Buttons = () => {
-  const { challenge, forfeit, reset, current } = usePlayContext();
+  const { challenge, declareVictory, myTurn } = useGameActions();
   return (
     <>
-      <button onClick={() => challenge()}>utfordre</button>
-      <button onClick={() => forfeit()} disabled={!current}>
-        gi opp
+      <button disabled={!myTurn} onClick={() => challenge!()}>
+        utfordre
       </button>
-      <button onClick={() => reset()}>reset</button>
+      <button disabled={!myTurn} onClick={() => declareVictory!()}>
+        declare victory
+      </button>
     </>
   );
 };

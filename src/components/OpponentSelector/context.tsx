@@ -1,16 +1,22 @@
-import { OPPONENTS } from "./opponents";
-import { useParams } from "react-router-dom";
+import { createContext, useContext } from "react";
 
-export const useOpponent = () => {
-  const { opponentId } = useParams();
-  if (!opponentId) {
-    throw new Error("Missing opponent ID");
+export const PlayersContext = createContext<string[] | undefined>(undefined);
+
+export const usePlayerIds = () => {
+  const players = useContext(PlayersContext);
+  if (!players) {
+    throw new Error(
+      "usePlayers() must live inside <PlayersContext.Provider ../>"
+    );
   }
 
-  const opponent = OPPONENTS[opponentId];
-  if (!opponent) {
-    throw new Error(`Unknown opponent: ${opponentId}`);
+  if (!players.length) {
+    throw new Error("No players");
   }
 
-  return opponent;
+  if (players.length === 1) {
+    throw new Error("Only one player");
+  }
+
+  return players;
 };
