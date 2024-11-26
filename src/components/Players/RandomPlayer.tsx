@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useTrie } from "../AppSetup/TrieProvider";
 import { nodeOptions, Trie, walk } from "../../trie";
 import { useGame, useGameActions } from "../GameLogic/context";
@@ -58,6 +58,18 @@ export const RandomPlayer = () => {
     },
     [addLetter, challenge, declareVictory, myTurn]
   );
+
+  const semaphore = useRef(true);
+
+  useEffect(() => {
+    if (myTurn) {
+      semaphore.current = false;
+      play(trie, current);
+    }
+    return () => {
+      semaphore.current = true;
+    };
+  }, [current, myTurn, play, trie]);
 
   return (
     <div>

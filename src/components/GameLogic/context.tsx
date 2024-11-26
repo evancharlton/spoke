@@ -11,6 +11,7 @@ export const GameActionsContext = createContext<
       challenge: () => void;
       answerChallenge: (word: string) => void;
       declareVictory: () => void;
+      newRound: () => void;
     }
   | undefined
 >(undefined);

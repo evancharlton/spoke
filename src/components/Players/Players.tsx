@@ -43,8 +43,8 @@ export const Players = () => {
       throw new Error(`Unknown player: ${playerId}`);
     }
     return (
-      <PlayerIdContext.Provider value={playerId}>
-        <Impl key={playerId} />
+      <PlayerIdContext.Provider key={playerId} value={playerId}>
+        <Impl />
       </PlayerIdContext.Provider>
     );
   });

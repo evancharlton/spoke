@@ -65,6 +65,10 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     [trie]
   );
 
+  const newRound = useCallback(() => {
+    dispatch({ move: "new-round" });
+  }, []);
+
   return (
     <GameActionsContext.Provider
       value={{
@@ -72,6 +76,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
         challenge,
         declareVictory,
         answerChallenge,
+        newRound,
       }}
     >
       <GameStateContext.Provider value={state}>

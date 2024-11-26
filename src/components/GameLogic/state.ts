@@ -2,6 +2,7 @@ import { Letter } from "../../trie";
 import { neverGuard } from "../../utils";
 
 export type Action =
+  | { move: "new-round" }
   | { move: "add-letter"; letter: Letter }
   | { move: "challenge" }
   | { move: "challenge -> real word"; word: string }
@@ -9,11 +10,6 @@ export type Action =
   | { move: "word-spelled" }
   | { move: "overlooked-word"; word: string }
   | { move: "false-victory"; possibleWord: string };
-
-export type Instruction = { playerId: string } & (
-  | { action: "respond-to-challenge" }
-  | { action: "add-letter" }
-);
 
 export type GameState = {
   player: number;
@@ -34,6 +30,18 @@ export type GameState = {
 const stateReducer = (state: GameState, action: Action): GameState => {
   const { move } = action;
   switch (move) {
+    case "new-round": {
+      return {
+        ...state,
+        player:
+          Object.values(state.losses).reduce((acc, v) => acc + v, 0) %
+          state.playerIds.length,
+        current: "",
+        endingWord: "",
+        resolution: undefined,
+      };
+    }
+
     case "add-letter": {
       return {
         ...state,
@@ -57,9 +65,12 @@ const stateReducer = (state: GameState, action: Action): GameState => {
       const loserIndex = state.player;
       const loserId = state.playerIds[loserIndex];
       state.losses[loserId] = state.losses[loserId] ?? 0;
-      state.losses[loserId] += 1;
       return {
         ...state,
+        losses: {
+          ...state.losses,
+          [loserId]: state.losses[loserId] + 1,
+        },
         player: loserIndex,
         resolution: "challenge -> fake word",
         endingWord: action.word,
@@ -74,10 +85,13 @@ const stateReducer = (state: GameState, action: Action): GameState => {
         (state.player + state.playerIds.length + 1) % state.playerIds.length;
       const loserId = state.playerIds[loserIndex];
       state.losses[loserId] = state.losses[loserId] ?? 0;
-      state.losses[loserId] += 1;
 
       return {
         ...state,
+        losses: {
+          ...state.losses,
+          [loserId]: state.losses[loserId] + 1,
+        },
         player: loserIndex,
         resolution: "challenge -> real word",
         endingWord: action.word,
@@ -92,10 +106,13 @@ const stateReducer = (state: GameState, action: Action): GameState => {
         (state.player + state.playerIds.length - 1) % state.playerIds.length;
       const loserId = state.playerIds[loserIndex];
       state.losses[loserId] = state.losses[loserId] ?? 0;
-      state.losses[loserId] += 1;
 
       return {
         ...state,
+        losses: {
+          ...state.losses,
+          [loserId]: state.losses[loserId] + 1,
+        },
         player: loserIndex,
         resolution: "word-spelled",
         endingWord: state.current,
@@ -108,10 +125,13 @@ const stateReducer = (state: GameState, action: Action): GameState => {
       const loserIndex = state.player;
       const loserId = state.playerIds[loserIndex];
       state.losses[loserId] = state.losses[loserId] ?? 0;
-      state.losses[loserId] += 1;
 
       return {
         ...state,
+        losses: {
+          ...state.losses,
+          [loserId]: state.losses[loserId] + 1,
+        },
         player: loserIndex,
         resolution: "false-victory",
         endingWord: action.possibleWord,
@@ -126,10 +146,13 @@ const stateReducer = (state: GameState, action: Action): GameState => {
         (state.player + state.playerIds.length - 1) % state.playerIds.length;
       const loserId = state.playerIds[loserIndex];
       state.losses[loserId] = state.losses[loserId] ?? 0;
-      state.losses[loserId] += 1;
 
       return {
         ...state,
+        losses: {
+          ...state.losses,
+          [loserId]: state.losses[loserId] + 1,
+        },
         player: loserIndex,
         resolution: "overlooked-word",
         endingWord: action.word,

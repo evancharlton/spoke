@@ -2,13 +2,20 @@ import { neverGuard } from "../../utils";
 import {
   useCurrentPlayer,
   useGame,
+  useGameActions,
   useNeighbors,
   usePlayerId,
 } from "../GameLogic/context";
 import NaobLink from "../NaobLink";
 
 const Modal = ({ children }: { children: React.ReactNode }) => {
-  return <dialog ref={(dialog) => dialog?.showModal()}> {children}</dialog>;
+  const { newRound } = useGameActions();
+  return (
+    <dialog ref={(dialog) => dialog?.showModal()}>
+      {children}
+      <button onClick={() => newRound()}>New round</button>
+    </dialog>
+  );
 };
 
 export const GameOverDialog = () => {
