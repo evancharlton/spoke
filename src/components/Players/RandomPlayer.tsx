@@ -4,24 +4,24 @@ import { nodeOptions, possibleWord, Trie, walk } from "../../trie";
 import { useGame, useGameActions } from "../GameLogic/context";
 import { Action } from "../GameLogic";
 
-const remaining = (root: Trie, current: string) => {
-  const start = walk(root, current);
-  if (!start) {
-    return null;
-  }
+// const remaining = (root: Trie, current: string) => {
+//   const start = walk(root, current);
+//   if (!start) {
+//     return null;
+//   }
 
-  const expand = (node: Trie): string[] => {
-    if (node._?.length) {
-      return node._;
-    }
+//   const expand = (node: Trie): string[] => {
+//     if (node._?.length) {
+//       return node._;
+//     }
 
-    return nodeOptions(node)
-      .map((letter) => expand(node[letter] ?? {}))
-      .flat();
-  };
+//     return nodeOptions(node)
+//       .map((letter) => expand(node[letter] ?? {}))
+//       .flat();
+//   };
 
-  return expand(start);
-};
+//   return expand(start);
+// };
 
 export const RandomPlayer = () => {
   const trie = useTrie();
@@ -84,25 +84,5 @@ export const RandomPlayer = () => {
     }
   }, [current, myTurn, play, trie]);
 
-  if (import.meta.env.PROD) {
-    return null;
-  }
-
-  const words = remaining(trie, current);
-
-  return (
-    <div>
-      <button disabled={!myTurn} onClick={() => play(trie, current)}>
-        (Robot play)
-      </button>
-      <button disabled={!myTurn} onClick={() => challenge()}>
-        (Robot challenge)
-      </button>
-      <pre>{JSON.stringify(words?.slice(0, 5), null, 2)}</pre>
-      <details>
-        <summary>{words?.length} words</summary>
-        <pre>{JSON.stringify(words, null, 2)}</pre>
-      </details>
-    </div>
-  );
+  return null;
 };

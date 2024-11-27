@@ -1,18 +1,15 @@
-import GameLogic, { useGame } from "../GameLogic";
+import GameLogic from "../GameLogic";
 import Players from "../Players";
 import Status from "../Status";
+import classes from "./Play.module.css";
 
 export const Play = () => {
   return (
-    <GameLogic>
-      <Status />
-      <Players />
-      {import.meta.env.DEV ? <GameDebug /> : null}
-    </GameLogic>
+    <div className={classes.container}>
+      <GameLogic>
+        <Status />
+        <Players />
+      </GameLogic>
+    </div>
   );
-};
-
-const GameDebug = () => {
-  const game = useGame();
-  return <pre>{JSON.stringify(game, null, 2)}</pre>;
 };

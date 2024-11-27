@@ -1,4 +1,3 @@
-import Buttons from "../Buttons";
 import ChallengeDialog from "../ChallengeDialog";
 import { useGame } from "../GameLogic";
 import { useCurrentPlayer, usePlayerId } from "../GameLogic/context";
@@ -16,7 +15,6 @@ export const HumanPlayer = () => {
   return (
     <>
       <Keyboard />
-      <Buttons />
       {showChallengeDialog ? <ChallengeDialog key={current} /> : null}
       <RoundOverDialog />
     </>
