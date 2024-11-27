@@ -4,7 +4,6 @@ export const Page = () => {
   return (
     <>
       <h1>Spøke</h1>
-      <hr />
       <Outlet />
     </>
   );

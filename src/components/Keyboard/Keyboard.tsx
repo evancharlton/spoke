@@ -53,6 +53,10 @@ export const Keyboard = () => {
   const enoughLetters = current.length >= playerIds.length;
 
   useEffect(() => {
+    if (!myTurn) {
+      return;
+    }
+
     const onKey = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase() as Letter;
       if (isLetter(key)) {
@@ -64,7 +68,7 @@ export const Keyboard = () => {
     return () => {
       removeEventListener("keypress", onKey);
     };
-  }, [addLetter]);
+  }, [addLetter, myTurn]);
 
   return (
     <div className={classes.keyboard}>
