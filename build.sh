@@ -12,3 +12,5 @@ jq -c < wordlist/spoke/nn/trie.json > public/nn/trie.json \
 
 npm run build \
   || exit $?
+
+echo "spøke.no" >> dist/CNAME
