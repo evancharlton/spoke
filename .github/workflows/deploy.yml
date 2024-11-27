@@ -4,8 +4,7 @@ on:
     branches:
       - main
 jobs:
-  # Build job
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: opentofu/setup-opentofu@v1
@@ -26,30 +25,22 @@ jobs:
         run: |
           ./build.sh
 
-      - name: Upload static files as artifact
-        id: deployment
-        uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
+      # - run: tofu init
+      # - id: plan
+      #   run: tofu plan -no-color
+      #   env:
+      #     TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_cloudflare_api_token }}
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          path: dist/
+          branch: gh-pages # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.
+          clean: true # Automatically remove deleted files from the deploy branch
 
-  # Deploy job
-  deploy:
-    # Add a dependency to the build job
-    needs: build
 
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
-    permissions:
-      pages: write # to deploy to Pages
-      id-token: write # to verify the deployment originates from an appropriate source
-
-    # Deploy to the github-pages environment
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    # Specify runner + deployment step
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
+      # - run: |
+      #     tofu state rm cloudflare_zone_settings_override.ssl_settings
+      #     tofu apply -auto-approve
+      #   env:
+      #     TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_cloudflare_api_token }}
