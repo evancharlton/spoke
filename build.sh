@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 mkdir -p public/nb/
 mkdir -p public/nn/
