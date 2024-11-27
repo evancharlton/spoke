@@ -11,7 +11,7 @@ import NaobLink from "../NaobLink";
 const Modal = ({ children }: { children: React.ReactNode }) => {
   const { newRound } = useGameActions();
   return (
-    <dialog ref={(dialog) => dialog?.showModal()}>
+    <dialog ref={(dialog) => dialog?.showModal()} onClose={() => newRound()}>
       {children}
       <button onClick={() => newRound()}>New round</button>
     </dialog>

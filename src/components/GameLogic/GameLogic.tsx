@@ -18,24 +18,29 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     losses: {},
   } satisfies GameState);
 
+  const { current } = state;
+
   const addLetter = useCallback((letter: Letter) => {
     dispatch({ move: "add-letter", letter });
   }, []);
 
   const challenge = useCallback(() => {
-    const busted = firstWord(trie, state.current);
+    const busted = firstWord(trie, current);
     if (busted) {
       dispatch({ move: "overlooked-word", word: busted });
       return;
     }
 
     dispatch({ move: "challenge" });
-  }, [state, trie]);
+  }, [current, trie]);
 
   const declareVictory = useCallback(() => {
-    const node = walk(trie, state.current);
+    const node = walk(trie, current);
     if (!node) {
-      // We walked off the end. Someone lost ...
+      // We walked off the end. Someone lost .. I think? I have no idea if this
+      // is the right logic for attributing the loss.
+      //
+      // Whatever.
       dispatch({ move: "word-spelled" });
       return;
     }
@@ -49,9 +54,9 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     // Incorrect! This wasn't yet a word
     dispatch({
       move: "false-victory",
-      possibleWord: possibleWord(trie, state.current),
+      possibleWord: possibleWord(trie, current),
     });
-  }, [state, trie]);
+  }, [current, trie]);
 
   const answerChallenge = useCallback(
     (word: string) => {

@@ -29,19 +29,23 @@ export type GameState = {
 
 const stateReducer = (state: GameState, action: Action): GameState => {
   const { move } = action;
-  switch (move) {
-    case "new-round": {
-      return {
-        ...state,
-        player:
-          Object.values(state.losses).reduce((acc, v) => acc + v, 0) %
-          state.playerIds.length,
-        current: "",
-        endingWord: "",
-        resolution: undefined,
-      };
-    }
+  if (move === "new-round") {
+    return {
+      ...state,
+      player:
+        Object.values(state.losses).reduce((acc, v) => acc + v, 0) %
+        state.playerIds.length,
+      current: "",
+      endingWord: "",
+      resolution: undefined,
+    };
+  }
 
+  if (state.resolution) {
+    return state;
+  }
+
+  switch (move) {
     case "add-letter": {
       return {
         ...state,
@@ -171,9 +175,12 @@ export const reducer: typeof stateReducer = (state, action) => {
   if (next === state) {
     return next;
   }
-  next.actions.unshift({
-    ...action,
-    playerId: currentPlayerId || "<not started yet>",
-  });
+  next.actions = [
+    {
+      ...action,
+      playerId: currentPlayerId || "<not started yet>",
+    },
+    ...state.actions,
+  ];
   return next;
 };

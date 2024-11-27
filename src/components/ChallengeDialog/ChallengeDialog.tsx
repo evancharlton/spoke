@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGame } from "../GameLogic";
 import { useGameActions } from "../GameLogic/context";
 
@@ -7,12 +7,8 @@ export const ChallengeDialog = () => {
   const { answerChallenge } = useGameActions();
   const [input, setInput] = useState(current);
 
-  useEffect(() => {
-    setInput(current);
-  }, [current]);
-
   return (
-    <dialog ref={(d) => d?.showModal()}>
+    <dialog ref={(d) => d?.showModal()} onClose={() => answerChallenge(input)}>
       <h1>Prove it</h1>
       <hr />
       <input

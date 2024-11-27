@@ -1,0 +1,19 @@
+.container {
+  display: grid;
+  grid-template-columns: min-content repeat(5, min-content);
+  gap: 8px;
+
+  align-items: center;
+}
+
+.letter {
+  font-size: 30px;
+  font-weight: 700;
+  text-transform: uppercase;
+  opacity: 30%;
+  transition: opacity 1s ease-out;
+}
+
+.letter.gained {
+  opacity: 1;
+}

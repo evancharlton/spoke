@@ -1,5 +1,6 @@
 import GameLogic, { useGame } from "../GameLogic";
 import Players from "../Players";
+import Scoreboard from "../Scoreboard";
 
 const Status = () => {
   return <h1>{useGame().current}</h1>;
@@ -8,6 +9,7 @@ const Status = () => {
 export const Play = () => {
   return (
     <GameLogic>
+      <Scoreboard />
       <Status />
       <Players />
       <GameDebug />

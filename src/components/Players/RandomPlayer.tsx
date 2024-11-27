@@ -59,16 +59,13 @@ export const RandomPlayer = () => {
     [addLetter, challenge, declareVictory, myTurn]
   );
 
-  const semaphore = useRef(true);
-
   useEffect(() => {
     if (myTurn) {
-      semaphore.current = false;
-      play(trie, current);
+      const id = setTimeout(() => play(trie, current), 500);
+      return () => {
+        clearTimeout(id);
+      };
     }
-    return () => {
-      semaphore.current = true;
-    };
   }, [current, myTurn, play, trie]);
 
   return (
