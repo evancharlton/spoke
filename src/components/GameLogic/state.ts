@@ -2,6 +2,7 @@ import { Letter } from "../../trie";
 import { neverGuard } from "../../utils";
 
 export type Action =
+  | { move: "new-game" }
   | { move: "new-round" }
   | { move: "add-letter"; letter: Letter }
   | { move: "challenge" }
@@ -18,6 +19,7 @@ export type GameState = {
   current: string;
   endingWord: string;
   actions: (Action & { playerId: string })[];
+  gameOver: boolean;
   resolution:
     | undefined
     | "challenge -> real word"
@@ -37,6 +39,19 @@ const stateReducer = (state: GameState, action: Action): GameState => {
         state.playerIds.length,
       current: "",
       endingWord: "",
+      resolution: undefined,
+    };
+  }
+
+  if (move === "new-game") {
+    return {
+      player: 0,
+      playerIds: state.playerIds,
+      losses: {},
+      current: "",
+      endingWord: "",
+      actions: [],
+      gameOver: false,
       resolution: undefined,
     };
   }
@@ -175,6 +190,7 @@ export const reducer: typeof stateReducer = (state, action) => {
   if (next === state) {
     return next;
   }
+
   next.actions = [
     {
       ...action,
@@ -182,5 +198,18 @@ export const reducer: typeof stateReducer = (state, action) => {
     },
     ...state.actions,
   ];
+
+  const loser = Object.keys(next.losses).filter(
+    (id) => next.losses[id] >= 5
+  )[0];
+
+  if (loser) {
+    return {
+      ...next,
+      gameOver: true,
+      playerId: loser,
+    };
+  }
+
   return next;
 };

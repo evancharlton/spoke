@@ -1,5 +1,6 @@
 import classes from "./Scoreboard.module.css";
 import { useGame } from "../GameLogic";
+import { Fragment } from "react";
 
 const LETTERS = ["s", "p", "ø", "k", "e"] as const;
 
@@ -11,7 +12,7 @@ export const Scoreboard = () => {
       style={{ gridTemplateRows: `repeat(${(playerIds.length, "auto")})` }}
     >
       {playerIds.map((id) => (
-        <>
+        <Fragment key={id}>
           <strong>{id}</strong>
           {LETTERS.map((letter, i) => (
             <div
@@ -26,7 +27,7 @@ export const Scoreboard = () => {
               {letter}
             </div>
           ))}
-        </>
+        </Fragment>
       ))}
     </div>
   );

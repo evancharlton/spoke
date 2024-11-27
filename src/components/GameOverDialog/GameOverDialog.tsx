@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { neverGuard } from "../../utils";
 import {
   useCurrentPlayer,
@@ -8,12 +9,27 @@ import {
 } from "../GameLogic/context";
 import NaobLink from "../NaobLink";
 
-const Modal = ({ children }: { children: React.ReactNode }) => {
+const Modal = ({
+  children,
+  onClose,
+  text = "New round",
+}: {
+  children: React.ReactNode;
+  text?: string;
+  onClose?: () => void;
+}) => {
   const { newRound } = useGameActions();
+  const ref = useRef<HTMLDialogElement | null>(null);
   return (
-    <dialog ref={(dialog) => dialog?.showModal()} onClose={() => newRound()}>
+    <dialog
+      ref={(dialog) => {
+        ref.current = dialog;
+        dialog?.showModal();
+      }}
+      onClose={onClose ?? newRound}
+    >
       {children}
-      <button onClick={() => newRound()}>New round</button>
+      <button onClick={() => ref.current?.close()}>{text}</button>
     </dialog>
   );
 };
@@ -22,7 +38,15 @@ export const GameOverDialog = () => {
   const loserId = useCurrentPlayer();
   const { previous } = useNeighbors();
   const playerId = usePlayerId();
-  const { resolution, current, endingWord } = useGame();
+  const { resolution, current, endingWord, gameOver } = useGame();
+
+  if (gameOver) {
+    return (
+      <Modal onClose={() => location.reload()} text="New game">
+        <h1>{loserId} loses</h1>
+      </Modal>
+    );
+  }
 
   if (!resolution) {
     return null;

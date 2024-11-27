@@ -45,6 +45,14 @@ export const walk = (trie: Trie, current: string): Trie | undefined => {
   return node;
 };
 
+/**
+ * Walk the trie along the path specified by current, returning the first word
+ * that is found along the way.
+ *
+ * If impossible input is given, an error will be thrown.
+ *
+ * @returns the first word found, or undefined if a word is not yet formed
+ */
 export const firstWord = (trie: Trie, current: string): string | undefined => {
   let node: Trie | undefined = trie;
   for (let i = 0; i < current.length; i += 1) {
@@ -61,22 +69,29 @@ export const firstWord = (trie: Trie, current: string): string | undefined => {
   return undefined;
 };
 
-export const possibleWord = (trie: Trie, start: string): string => {
-  let node: Trie | undefined = walk(trie, start);
+export const possibleWord = (
+  trie: Trie,
+  current: string
+): string | undefined => {
+  let node = walk(trie, current);
   if (!node) {
-    throw new Error(`${start} does not start a known word`);
+    return undefined;
   }
+
+  // Continue walking to find the first possible word.
   while (node) {
-    if (node._?.length) {
-      return node._[0];
+    if (node?._?.length) {
+      return node?._[0];
     }
-    const option: Letter = nodeOptions(node)[0];
+
+    const option: Letter | undefined = nodeOptions(node)[0];
     if (!option) {
-      throw new Error("Wound up on a node with no options");
+      throw new Error("No word can be formed -- this should be impossible");
     }
+
     node = node[option];
   }
-  throw new Error("Walked right off the Trie");
+  return undefined;
 };
 
 export const nodeOptions = (trie: Trie): Letter[] => {

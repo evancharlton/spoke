@@ -1,18 +1,13 @@
 import GameLogic, { useGame } from "../GameLogic";
 import Players from "../Players";
-import Scoreboard from "../Scoreboard";
-
-const Status = () => {
-  return <h1>{useGame().current}</h1>;
-};
+import Status from "../Status";
 
 export const Play = () => {
   return (
     <GameLogic>
-      <Scoreboard />
       <Status />
       <Players />
-      <GameDebug />
+      {import.meta.env.DEV ? <GameDebug /> : null}
     </GameLogic>
   );
 };

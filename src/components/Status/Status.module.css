@@ -1,0 +1,4 @@
+.input:empty:before {
+  content: "Velg én bokstav …";
+  opacity: 30%;
+}

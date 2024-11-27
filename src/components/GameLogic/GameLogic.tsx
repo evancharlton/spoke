@@ -16,6 +16,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     endingWord: "",
     resolution: undefined,
     losses: {},
+    gameOver: false,
   } satisfies GameState);
 
   const { current } = state;
@@ -25,12 +26,16 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const challenge = useCallback(() => {
-    const busted = firstWord(trie, current);
-    if (busted) {
-      dispatch({ move: "overlooked-word", word: busted });
-      return;
+    try {
+      const busted = firstWord(trie, current);
+      if (busted) {
+        dispatch({ move: "overlooked-word", word: busted });
+        return;
+      }
+    } catch {
+      // If we get here, it's because current doesn't actually form a word that
+      // we know about, so pass it back to the player to verify.
     }
-
     dispatch({ move: "challenge" });
   }, [current, trie]);
 
@@ -51,11 +56,19 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
-    // Incorrect! This wasn't yet a word
-    dispatch({
-      move: "false-victory",
-      possibleWord: possibleWord(trie, current),
-    });
+    // Incorrect victory! This wasn't yet a word
+    const answer = possibleWord(trie, current);
+    if (answer) {
+      dispatch({
+        move: "false-victory",
+        possibleWord: answer,
+      });
+    } else {
+      dispatch({
+        move: "false-victory",
+        possibleWord: "<impossible situation>",
+      });
+    }
   }, [current, trie]);
 
   const answerChallenge = useCallback(
@@ -74,6 +87,10 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     dispatch({ move: "new-round" });
   }, []);
 
+  const newGame = useCallback(() => {
+    dispatch({ move: "new-game" });
+  }, []);
+
   return (
     <GameActionsContext.Provider
       value={{
@@ -82,6 +99,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
         declareVictory,
         answerChallenge,
         newRound,
+        newGame,
       }}
     >
       <GameStateContext.Provider value={state}>
