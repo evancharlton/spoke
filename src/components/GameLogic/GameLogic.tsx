@@ -21,7 +21,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
   const { current } = state;
 
   const addLetter = useCallback((letter: Letter) => {
-    dispatch({ move: "add-letter", letter });
+    dispatch({ move: "add-letter", letter: letter.toLowerCase() as Letter });
   }, []);
 
   const challenge = useCallback(() => {
