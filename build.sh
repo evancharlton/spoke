@@ -5,4 +5,4 @@ npm ci \
 npm run build \
   || exit $?
 
-echo "spøke.no" >> dist/CNAME
+echo "spoke.no" >> dist/CNAME
