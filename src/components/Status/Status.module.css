@@ -1,4 +1,5 @@
 .input:empty:before {
-  content: "Velg én bokstav …";
+  content: "Velg én bokstav…";
   opacity: 30%;
+  text-wrap: pretty;
 }

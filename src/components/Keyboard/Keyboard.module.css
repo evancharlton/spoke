@@ -2,9 +2,16 @@
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   grid-template-rows: repeat(3 1fr);
-  gap: 4px;
+  width: 100%;
 }
 
 .action {
   grid-column: span 2;
+}
+
+.keyboard button {
+  padding: auto 8px;
+  border-radius: 2px;
+  min-height: 4rem;
+  border-color: white;
 }
