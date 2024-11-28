@@ -7,7 +7,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: opentofu/setup-opentofu@v1
       - name: Checkout 🛎️
         uses: actions/checkout@v4
         with:
@@ -24,12 +23,6 @@ jobs:
           PUBLIC_URL: /
         run: |
           ./build.sh
-
-      - run: tofu init
-      - id: plan
-        run: tofu plan -no-color
-        env:
-          TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_cloudflare_api_token }}
 
       - name: Upload static files as artifact
         id: deployment
@@ -55,7 +48,9 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - run: |
+      - name: "Terraform"
+        run: |
+          tofu plan -no-color
           tofu state rm cloudflare_zone_settings_override.ssl_settings
           tofu apply -auto-approve
         env:
