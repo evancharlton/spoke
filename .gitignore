@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Terraform / OpenTofu resources
+.terraform
+.terraform.lock.hcl
+.terraform.*.backup
