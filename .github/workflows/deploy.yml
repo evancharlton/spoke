@@ -33,6 +33,7 @@ jobs:
 
       - name: Terraform
         run: |
+          tofu init
           tofu plan -no-color
           tofu state rm cloudflare_zone_settings_override.ssl_settings
           tofu apply -auto-approve
