@@ -7,6 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: opentofu/setup-opentofu@v1
       - name: Checkout 🛎️
         uses: actions/checkout@v4
         with:
@@ -30,6 +31,14 @@ jobs:
         with:
           path: dist/
 
+      - name: Terraform
+        run: |
+          tofu plan -no-color
+          tofu state rm cloudflare_zone_settings_override.ssl_settings
+          tofu apply -auto-approve
+        env:
+          TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_cloudflare_api_token }}
+
   deploy:
     needs: build
 
@@ -43,15 +52,6 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: opentofu/setup-opentofu@v1
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: "Terraform"
-        run: |
-          tofu plan -no-color
-          tofu state rm cloudflare_zone_settings_override.ssl_settings
-          tofu apply -auto-approve
-        env:
-          TF_VAR_cloudflare_api_token: ${{ secrets.TF_VAR_cloudflare_api_token }}
