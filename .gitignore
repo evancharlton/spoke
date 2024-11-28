@@ -26,4 +26,4 @@ dist-ssr
 # Terraform / OpenTofu resources
 .terraform
 .terraform.lock.hcl
-.terraform.*.backup
+terraform.*.backup

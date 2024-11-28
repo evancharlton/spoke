@@ -3,57 +3,22 @@ import { useGame, useGameActions } from "../GameLogic/context";
 import classes from "./Keyboard.module.css";
 import { Letter } from "../../trie";
 import { neverGuard } from "../../utils";
+import { isLetter } from "../../letters";
 
-const ALPHABET = [
+const LAYOUT = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å"],
   ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ø", "æ"],
   ["🤔", "z", "x", "c", "v", "b", "n", "m", "🎉"],
 ] as const;
 
-const LETTERS = new Set<Letter>([
-  "q",
-  "w",
-  "e",
-  "r",
-  "t",
-  "y",
-  "u",
-  "i",
-  "o",
-  "p",
-  "å",
-  "a",
-  "s",
-  "d",
-  "f",
-  "g",
-  "h",
-  "j",
-  "k",
-  "l",
-  "ø",
-  "æ",
-  "z",
-  "x",
-  "c",
-  "v",
-  "b",
-  "n",
-  "m",
-]);
-
-const isLetter = (letter: string): letter is Letter => {
-  return LETTERS.has(letter as Letter);
-};
-
-export const Keyboard = () => {
+export const Keyboard = ({ disabled }: { disabled: boolean }) => {
   const { current, playerIds } = useGame();
   const { addLetter, myTurn, challenge, declareVictory } = useGameActions();
 
   const enoughLetters = current.length >= playerIds.length;
 
   useEffect(() => {
-    if (!myTurn) {
+    if (disabled || !myTurn) {
       return;
     }
 
@@ -68,17 +33,17 @@ export const Keyboard = () => {
     return () => {
       removeEventListener("keypress", onKey);
     };
-  }, [addLetter, myTurn]);
+  }, [addLetter, disabled, myTurn]);
 
   return (
     <div className={classes.keyboard}>
-      {ALPHABET.map((row, i) => (
+      {LAYOUT.map((row, i) => (
         <Fragment key={`row-${i}`}>
           {row.map((letter) => {
             if (isLetter(letter)) {
               return (
                 <button
-                  disabled={!myTurn}
+                  disabled={disabled || !myTurn}
                   key={letter}
                   onClick={() => addLetter!(letter)}
                 >
@@ -89,7 +54,7 @@ export const Keyboard = () => {
               return (
                 <button
                   className={classes.action}
-                  disabled={!myTurn || !enoughLetters}
+                  disabled={disabled || !myTurn || !enoughLetters}
                   key={letter}
                   onClick={() => challenge()}
                 >
@@ -100,7 +65,7 @@ export const Keyboard = () => {
               return (
                 <button
                   className={classes.action}
-                  disabled={!myTurn || !enoughLetters}
+                  disabled={disabled || !myTurn || !enoughLetters}
                   key={letter}
                   onClick={() => declareVictory()}
                 >

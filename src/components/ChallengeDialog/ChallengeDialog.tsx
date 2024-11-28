@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useGame } from "../GameLogic";
 import { useGameActions } from "../GameLogic/context";
+import { isLetter } from "../../letters";
 
 export const ChallengeDialog = () => {
   const { current } = useGame();
@@ -11,24 +12,25 @@ export const ChallengeDialog = () => {
     <dialog ref={(d) => d?.showModal()} onClose={() => answerChallenge(input)}>
       <h1>Prove it</h1>
       <hr />
-      <input
-        type="text"
-        onChange={(e) => {
-          const value = e.target.value;
-          if (!value.startsWith(current)) {
-            return;
-          }
-          setInput(value);
-        }}
-        value={input}
-      />
-      <button
-        onClick={() => {
-          answerChallenge!(input);
-        }}
-      >
-        &gt;
-      </button>
+      <form onSubmit={() => answerChallenge(input)}>
+        <input
+          type="text"
+          onChange={(e) => {
+            const value = e.target.value;
+            if (!value.startsWith(current)) {
+              return;
+            }
+            setInput(
+              value
+                .split("")
+                .filter((v) => isLetter(v))
+                .join("")
+            );
+          }}
+          value={input}
+        />
+        <button type="submit">&gt;</button>
+      </form>
     </dialog>
   );
 };

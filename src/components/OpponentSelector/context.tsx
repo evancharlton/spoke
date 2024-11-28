@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
+import { PlayerId } from "../Players";
 
-export const PlayersContext = createContext<string[] | undefined>(undefined);
+export const PlayersContext = createContext<PlayerId[] | undefined>(undefined);
 
 export const usePlayerIds = () => {
   const players = useContext(PlayersContext);

@@ -11,6 +11,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* colors */
+  --highlight-color: rgb(255, 141, 48);
 }
 
 a {
@@ -62,4 +65,9 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+dialog[open] {
+  max-width: 80vw;
+  border-radius: 16px;
 }

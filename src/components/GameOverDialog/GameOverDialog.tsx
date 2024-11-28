@@ -8,6 +8,8 @@ import {
   usePlayerId,
 } from "../GameLogic/context";
 import NaobLink from "../NaobLink";
+import { findAlternate } from "../../trie";
+import { useTrie } from "../AppSetup/TrieProvider";
 
 const Modal = ({
   children,
@@ -35,6 +37,7 @@ const Modal = ({
 };
 
 export const GameOverDialog = () => {
+  const trie = useTrie();
   const loserId = useCurrentPlayer();
   const { previous } = useNeighbors();
   const playerId = usePlayerId();
@@ -54,11 +57,16 @@ export const GameOverDialog = () => {
 
   switch (resolution) {
     case "challenge -> fake word": {
+      const possibility = findAlternate(trie, endingWord);
+
       if (loserId === playerId) {
         return (
           <Modal>
             <h1>You lose</h1>
-            <p>You tried to use {endingWord}, which isn't a known word</p>
+            <p>
+              You tried to use {endingWord}, which isn't a known word. However,{" "}
+              <NaobLink word={possibility} /> could have been spelled earlier.
+            </p>
           </Modal>
         );
       }
@@ -66,7 +74,11 @@ export const GameOverDialog = () => {
       return (
         <Modal>
           <h1>{loserId} loses</h1>
-          <p>You tried to use {endingWord}, which isn't a known word</p>
+          <p>
+            {loserId} tried to use {endingWord}, which isn't a known word.
+            However, <NaobLink word={possibility} /> could have been spelled
+            earlier.
+          </p>
         </Modal>
       );
     }

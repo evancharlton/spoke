@@ -1,11 +1,13 @@
 import classes from "./Scoreboard.module.css";
 import { useGame } from "../GameLogic";
-import { Fragment } from "react";
+import { usePlayerInfo } from "../Players";
+import { Fragment } from "react/jsx-runtime";
 
 const LETTERS = ["s", "p", "ø", "k", "e"] as const;
 
 export const Scoreboard = () => {
   const { playerIds, losses } = useGame();
+  const playerInfo = usePlayerInfo();
   return (
     <div
       className={classes.container}
@@ -13,7 +15,7 @@ export const Scoreboard = () => {
     >
       {playerIds.map((id) => (
         <Fragment key={id}>
-          <strong>{id}</strong>
+          <strong className={classes.player}>{playerInfo(id).name}</strong>
           {LETTERS.map((letter, i) => (
             <div
               key={`${id}-${letter}`}

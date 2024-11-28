@@ -1,9 +1,17 @@
 .container {
+  width: 100%;
   display: grid;
-  grid-template-columns: min-content repeat(5, min-content);
+  grid-template-columns: 50% repeat(5, min-content);
   gap: 8px;
 
   align-items: center;
+}
+
+.container .player {
+  text-wrap: nowrap;
+  padding-left: 1em;
+  padding-right: 1em;
+  text-align: right;
 }
 
 .letter {

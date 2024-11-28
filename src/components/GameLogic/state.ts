@@ -1,5 +1,6 @@
 import { Letter } from "../../trie";
 import { neverGuard } from "../../utils";
+import { PlayerId } from "../Players";
 
 export type Action =
   | { move: "new-game" }
@@ -10,15 +11,16 @@ export type Action =
   | { move: "challenge -> fake word"; word: string }
   | { move: "word-spelled" }
   | { move: "overlooked-word"; word: string }
+  | { move: "defeated"; word: string }
   | { move: "false-victory"; possibleWord: string };
 
 export type GameState = {
   player: number;
-  playerIds: string[];
-  losses: Record<string, number>;
+  playerIds: PlayerId[];
+  losses: Record<PlayerId, number>;
   current: string;
   endingWord: string;
-  actions: (Action & { playerId: string })[];
+  actions: (Action & { playerId: PlayerId })[];
   gameOver: boolean;
   resolution:
     | undefined
@@ -47,7 +49,7 @@ const stateReducer = (state: GameState, action: Action): GameState => {
     return {
       player: 0,
       playerIds: state.playerIds,
-      losses: {},
+      losses: {} as Record<PlayerId, number>,
       current: "",
       endingWord: "",
       actions: [],
@@ -138,6 +140,22 @@ const stateReducer = (state: GameState, action: Action): GameState => {
       };
     }
 
+    case "defeated": {
+      const loserIndex = state.player;
+      const loserId = state.playerIds[loserIndex];
+      state.losses[loserId] = state.losses[loserId] ?? 0;
+      return {
+        ...state,
+        losses: {
+          ...state.losses,
+          [loserId]: state.losses[loserId] + 1,
+        },
+        player: loserIndex,
+        resolution: "word-spelled",
+        endingWord: action.word,
+      };
+    }
+
     case "false-victory": {
       // The current player *claimed* that the current string was a real word,
       // when in fact it was not. This means that the current player loses.
@@ -200,7 +218,7 @@ export const reducer: typeof stateReducer = (state, action) => {
   ];
 
   const loser = Object.keys(next.losses).filter(
-    (id) => next.losses[id] >= 5
+    (id) => next.losses[id as PlayerId] >= 5
   )[0];
 
   if (loser) {

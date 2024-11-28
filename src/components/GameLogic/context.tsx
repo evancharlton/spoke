@@ -11,20 +11,31 @@ export const GameActionsContext = createContext<
       challenge: () => void;
       answerChallenge: (word: string) => void;
       declareVictory: () => void;
+      admitDefeat: (word: string) => void;
       newRound: () => void;
       newGame: () => void;
     }
   | undefined
 >(undefined);
 
-export const PlayerIdContext = createContext<string>("");
+export const PlayerContext = createContext<
+  { id: string; name: string } | undefined
+>(undefined);
 
 export const usePlayerId = () => {
-  const playerId = useContext(PlayerIdContext);
-  if (!playerId) {
+  const context = useContext(PlayerContext);
+  if (!context) {
     throw new Error("Invalid player ID specified");
   }
-  return playerId;
+  return context.id;
+};
+
+export const usePlayerName = () => {
+  const context = useContext(PlayerContext);
+  if (!context) {
+    throw new Error("Invalid player name specified");
+  }
+  return context.name;
 };
 
 export const useGame = () => {

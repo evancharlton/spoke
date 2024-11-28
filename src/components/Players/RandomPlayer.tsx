@@ -23,11 +23,17 @@ import { Action } from "../GameLogic";
 //   return expand(start);
 // };
 
-export const RandomPlayer = () => {
+const useRandom = ({ giveUp }: { giveUp: boolean }) => {
   const trie = useTrie();
   const { current, actions } = useGame();
-  const { addLetter, challenge, answerChallenge, declareVictory, myTurn } =
-    useGameActions();
+  const {
+    addLetter,
+    admitDefeat,
+    challenge,
+    answerChallenge,
+    declareVictory,
+    myTurn,
+  } = useGameActions();
 
   const lastAction = useRef<Action | undefined>();
   lastAction.current = actions[0];
@@ -70,9 +76,23 @@ export const RandomPlayer = () => {
         throw new Error("Something went wrong picking a random letter");
       }
 
-      addLetter(letter);
+      // Peek at the next node to see whether it's defeat or not.
+      const next = node[letter];
+      if (giveUp && next?._?.length) {
+        admitDefeat(next._[0]);
+      } else {
+        addLetter(letter);
+      }
     },
-    [addLetter, answerChallenge, challenge, declareVictory, myTurn]
+    [
+      addLetter,
+      admitDefeat,
+      answerChallenge,
+      challenge,
+      declareVictory,
+      giveUp,
+      myTurn,
+    ]
   );
 
   useEffect(() => {
@@ -83,6 +103,14 @@ export const RandomPlayer = () => {
       };
     }
   }, [current, myTurn, play, trie]);
+};
 
+export const RandomPlayer = () => {
+  useRandom({ giveUp: false });
+  return null;
+};
+
+export const RandomPlayer2 = () => {
+  useRandom({ giveUp: true });
   return null;
 };

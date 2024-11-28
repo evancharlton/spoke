@@ -4,6 +4,7 @@ import { GameState, reducer } from "./state";
 import { firstWord, Letter, possibleWord, walk } from "../../trie";
 import { useTrie } from "../AppSetup/TrieProvider";
 import { usePlayerIds } from "../OpponentSelector/context";
+import { PlayerId } from "../Players";
 
 export const GameLogic = ({ children }: { children: React.ReactNode }) => {
   const playerIds = usePlayerIds();
@@ -15,7 +16,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     current: "",
     endingWord: "",
     resolution: undefined,
-    losses: {},
+    losses: {} as Record<PlayerId, number>,
     gameOver: false,
   } satisfies GameState);
 
@@ -71,6 +72,11 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     }
   }, [current, trie]);
 
+  /** Used by robots when they know they're playing a losing word. */
+  const admitDefeat = useCallback((word: string) => {
+    dispatch({ move: "defeated", word });
+  }, []);
+
   const answerChallenge = useCallback(
     (word: string) => {
       const node = walk(trie, word);
@@ -95,11 +101,12 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     <GameActionsContext.Provider
       value={{
         addLetter,
+        admitDefeat,
+        answerChallenge,
         challenge,
         declareVictory,
-        answerChallenge,
-        newRound,
         newGame,
+        newRound,
       }}
     >
       <GameStateContext.Provider value={state}>

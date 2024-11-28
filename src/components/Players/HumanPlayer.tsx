@@ -1,20 +1,18 @@
 import ChallengeDialog from "../ChallengeDialog";
 import { useGame } from "../GameLogic";
-import { useCurrentPlayer, usePlayerId } from "../GameLogic/context";
+import { useGameActions } from "../GameLogic/context";
 import RoundOverDialog from "../GameOverDialog";
 import Keyboard from "../Keyboard";
 
 export const HumanPlayer = () => {
   const { actions, current } = useGame();
-  const currentPlayer = useCurrentPlayer();
-  const myId = usePlayerId();
+  const { myTurn } = useGameActions();
 
-  const showChallengeDialog =
-    actions[0]?.move === "challenge" && currentPlayer === myId;
+  const showChallengeDialog = actions[0]?.move === "challenge" && myTurn;
 
   return (
     <>
-      <Keyboard />
+      <Keyboard disabled={showChallengeDialog} />
       {showChallengeDialog ? <ChallengeDialog key={current} /> : null}
       <RoundOverDialog />
     </>
