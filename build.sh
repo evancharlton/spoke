@@ -5,4 +5,4 @@ npm ci \
 npm run build \
   || exit $?
 
-echo "spoke.no" >> dist/CNAME
+echo "xn--spke-hra.no" >> dist/CNAME
