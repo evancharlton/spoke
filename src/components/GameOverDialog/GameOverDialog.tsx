@@ -5,33 +5,27 @@ import {
   useGame,
   useGameActions,
   useNeighbors,
-  usePlayerId,
-} from "../GameLogic/context";
+} from "../GameLogic";
 import NaobLink from "../NaobLink";
 import { findAlternate } from "../../trie";
 import { useTrie } from "../AppSetup/TrieProvider";
+import classes from "./GameOverDialog.module.css";
+import { usePlayerInfo } from "../Players";
 
-const Modal = ({
-  children,
-  onClose,
-  text = "New round",
-}: {
-  children: React.ReactNode;
-  text?: string;
-  onClose?: () => void;
-}) => {
+const Modal = ({ children }: { children: React.ReactNode }) => {
   const { newRound } = useGameActions();
   const ref = useRef<HTMLDialogElement | null>(null);
   return (
     <dialog
+      className={classes.roundOver}
       ref={(dialog) => {
         ref.current = dialog;
         dialog?.showModal();
       }}
-      onClose={onClose ?? newRound}
+      onClose={newRound}
     >
       {children}
-      <button onClick={() => ref.current?.close()}>{text}</button>
+      <button onClick={() => ref.current?.close()}>neste runde</button>
     </dialog>
   );
 };
@@ -40,16 +34,10 @@ export const GameOverDialog = () => {
   const trie = useTrie();
   const loserId = useCurrentPlayer();
   const { previous } = useNeighbors();
-  const playerId = usePlayerId();
-  const { resolution, current, endingWord, gameOver } = useGame();
-
-  if (gameOver) {
-    return (
-      <Modal onClose={() => location.reload()} text="New game">
-        <h1>{loserId} loses</h1>
-      </Modal>
-    );
-  }
+  const { resolution, current, endingWord } = useGame();
+  const playerInfo = usePlayerInfo();
+  const loserInfo = playerInfo(loserId);
+  const previousInfo = playerInfo(previous);
 
   if (!resolution) {
     return null;
@@ -59,116 +47,69 @@ export const GameOverDialog = () => {
     case "challenge -> fake word": {
       const possibility = findAlternate(trie, endingWord);
 
-      if (loserId === playerId) {
-        return (
-          <Modal>
-            <h1>You lose</h1>
-            <p>
-              You tried to use {endingWord}, which isn't a known word. However,{" "}
-              <NaobLink word={possibility} /> could have been spelled earlier.
-            </p>
-          </Modal>
-        );
-      }
-
       return (
         <Modal>
-          <h1>{loserId} loses</h1>
           <p>
-            {loserId} tried to use {endingWord}, which isn't a known word.
-            However, <NaobLink word={possibility} /> could have been spelled
-            earlier.
+            {loserInfo.name} prøvde å stave{" "}
+            <span className={classes.unknownWord}>{endingWord}</span>, som er
+            ukjent.
+          </p>
+          <p>
+            Imidlertid kunne <NaobLink word={possibility} /> vært stavet i
+            stedet.
           </p>
         </Modal>
       );
     }
 
     case "challenge -> real word": {
-      if (loserId === playerId) {
-        return (
-          <Modal>
-            <h1>You lose</h1>
-            <p>
-              You challenged {previous} who was thinking of using {current} to
-              spell <NaobLink word={endingWord} />
-            </p>
-          </Modal>
-        );
-      }
       return (
         <Modal>
-          <h1>{loserId} loses</h1>
           <p>
-            {loserId} challenged {previous} who was thinking of using {current}{" "}
-            to spell <NaobLink word={endingWord} />
+            {loserInfo.name} utfordret {previousInfo.name} til å avsløre deres
+            ord.
+          </p>
+          <p>
+            De stavet mot <NaobLink word={endingWord} /> og vant runden.
           </p>
         </Modal>
       );
     }
 
     case "false-victory": {
-      if (loserId === playerId) {
-        return (
-          <Modal>
-            <h1>You lose</h1>
-            <p>
-              You claimed {current} was a word, but it isn't (however, it could
-              be used to spell <NaobLink word={endingWord} />)
-            </p>
-          </Modal>
-        );
-      }
       return (
         <Modal>
-          <h1>{loserId} loses</h1>
           <p>
-            {loserId} claimed {current} was a word, but it isn't (however, it
-            could be used to spell <NaobLink word={endingWord} />)
+            {loserInfo.name} hevdet at{" "}
+            <span className={classes.unknownWord}>{current}</span> var et ord,
+            men det er ukjent.
+          </p>
+          <p>
+            Det kunne imidlertid vært brukt til å stave{" "}
+            <NaobLink word={endingWord} />.
           </p>
         </Modal>
       );
     }
 
     case "word-spelled": {
-      if (loserId === playerId) {
-        return (
-          <Modal>
-            <h1>You lose</h1>
-            <p>
-              You spelled <NaobLink word={endingWord} />, which is a real word
-            </p>
-          </Modal>
-        );
-      }
       return (
         <Modal>
-          <h1>{loserId} loses</h1>
           <p>
-            They spelled <NaobLink word={endingWord} />, which is a real word
+            {loserInfo.name} stavet ordet <NaobLink word={endingWord} />.
           </p>
         </Modal>
       );
     }
 
     case "overlooked-word": {
-      if (loserId === playerId) {
-        return (
-          <Modal>
-            <h1>You lose</h1>
-            <p>
-              You failed to notice that <NaobLink word={endingWord} /> was
-              previously spelled in {current}
-            </p>
-          </Modal>
-        );
-      }
       return (
         <Modal>
-          <h1>{loserId} loses</h1>
           <p>
-            {loserId} failed to notice that <NaobLink word={endingWord} /> was
-            previously spelled in {current}
+            {loserInfo.name} la ikke merke til at <NaobLink word={endingWord} />{" "}
+            tidligere ble stavet.
           </p>
+          <p>{loserInfo.name} har tapt denne runden.</p>
         </Modal>
       );
     }

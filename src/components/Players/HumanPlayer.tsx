@@ -1,7 +1,7 @@
 import ChallengeDialog from "../ChallengeDialog";
 import { useGame } from "../GameLogic";
 import { useGameActions } from "../GameLogic/context";
-import RoundOverDialog from "../GameOverDialog";
+import GameOverDialog from "../GameOverDialog";
 import Keyboard from "../Keyboard";
 
 export const HumanPlayer = () => {
@@ -14,7 +14,7 @@ export const HumanPlayer = () => {
     <>
       <Keyboard disabled={showChallengeDialog} />
       {showChallengeDialog ? <ChallengeDialog key={current} /> : null}
-      <RoundOverDialog />
+      <GameOverDialog />
     </>
   );
 };

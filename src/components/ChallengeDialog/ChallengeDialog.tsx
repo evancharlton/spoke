@@ -10,7 +10,8 @@ export const ChallengeDialog = () => {
 
   return (
     <dialog ref={(d) => d?.showModal()} onClose={() => answerChallenge(input)}>
-      <h1>Prove it</h1>
+      <h1>Utfordret</h1>
+      <p>Du har blitt utfordret. Hvilke ord hadde du i tankene?</p>
       <hr />
       <form onSubmit={() => answerChallenge(input)}>
         <input
@@ -30,6 +31,10 @@ export const ChallengeDialog = () => {
           value={input}
         />
         <button type="submit">&gt;</button>
+      </form>
+      <hr />
+      <form onSubmit={() => answerChallenge(current)}>
+        <button type="submit">Jeg hadde ikke et ord</button>
       </form>
     </dialog>
   );

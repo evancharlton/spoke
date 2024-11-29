@@ -1,0 +1,25 @@
+dialog.roundOver button {
+  min-height: 40px;
+  padding: 12px;
+  text-transform: uppercase;
+  border-color: var(--highlight-color);
+}
+
+.dialog.roundOver p {
+  text-wrap: pretty;
+}
+
+.unknownWord {
+  font-family: "Courier New", Courier, monospace;
+  font-weight: 700;
+}
+
+.unknownWord::before {
+  content: "«";
+  padding-right: 2px;
+}
+
+.unknownWord::after {
+  content: "»";
+  padding-left: 2px;
+}
