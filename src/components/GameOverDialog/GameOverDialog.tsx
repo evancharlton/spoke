@@ -50,9 +50,12 @@ export const GameOverDialog = () => {
       return (
         <Modal>
           <p>
-            {loserInfo.name} ble utfordet til å avsløre et ord som begynnt med{" "}
-            {current}.<span className={classes.unknownWord}>{endingWord}</span>{" "}
-            ble avslørt, og er ikke kjent.
+            {loserInfo.name} ble utfordet til å avsløre et ord som begynner med{" "}
+            <code>{current}</code>.
+          </p>
+          <p>
+            <span className={classes.unknownWord}>{endingWord}</span> ble
+            avslørt, og er ikke kjent.
           </p>
           <p>
             Imidlertid kunne <NaobLink word={possibility} /> vært stavet i

@@ -5,7 +5,7 @@ dialog.roundOver button {
   border-color: var(--highlight-color);
 }
 
-.dialog.roundOver p {
+dialog.roundOver p {
   text-wrap: pretty;
 }
 
@@ -22,4 +22,10 @@ dialog.roundOver button {
 .unknownWord::after {
   content: "»";
   padding-left: 2px;
+}
+
+dialog.roundOver code {
+  border: 1px solid #999a;
+  padding: 4px;
+  letter-spacing: 2px;
 }
