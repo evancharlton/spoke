@@ -1,7 +1,8 @@
 import { useCallback } from "react";
-import { PLAYERS } from "./Players";
+import { PLAYERS } from "./data";
 
 export { Players as default } from "./Players";
+export { PLAYERS } from "./data";
 export type PlayerId = keyof typeof PLAYERS;
 
 export const usePlayerInfo = () => {

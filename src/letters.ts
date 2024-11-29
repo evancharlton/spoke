@@ -1,6 +1,6 @@
 import { Letter } from "./trie";
 
-export const LETTERS = new Set<Letter>([
+export const LETTERS = [
   "q",
   "w",
   "e",
@@ -30,8 +30,10 @@ export const LETTERS = new Set<Letter>([
   "b",
   "n",
   "m",
-]);
+] as const;
+
+export const LETTER_SET = new Set<Letter>(LETTERS);
 
 export const isLetter = (letter: string): letter is Letter => {
-  return LETTERS.has(letter as Letter);
+  return LETTER_SET.has(letter as Letter);
 };

@@ -20,6 +20,8 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     gameOver: false,
   } satisfies GameState);
 
+  const numPlayers = state.playerIds.length;
+
   const { current } = state;
 
   const addLetter = useCallback((letter: Letter) => {
@@ -41,13 +43,20 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
   }, [current, trie]);
 
   const declareVictory = useCallback(() => {
+    if (current.length < numPlayers) {
+      // This is impossible - you can't declare victory so soon.
+      return;
+    }
+
     const node = walk(trie, current);
     if (!node) {
-      // We walked off the end. Someone lost .. I think? I have no idea if this
-      // is the right logic for attributing the loss.
+      // We walked off the end. Technically, this should be a challenge, and
+      // to claim victory would mean that the current user lost. However, let's
+      // be a little less-strict because it's easy to mix up the buttons.
       //
-      // Whatever.
-      dispatch({ move: "word-spelled" });
+      // Auto-correct this back to a challenge.
+
+      challenge();
       return;
     }
 
@@ -70,7 +79,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
         possibleWord: "<impossible situation>",
       });
     }
-  }, [current, trie]);
+  }, [challenge, current, numPlayers, trie]);
 
   /** Used by robots when they know they're playing a losing word. */
   const admitDefeat = useCallback((word: string) => {

@@ -15,8 +15,6 @@ export const Keyboard = ({ disabled }: { disabled: boolean }) => {
   const { current, playerIds } = useGame();
   const { addLetter, myTurn, challenge, declareVictory } = useGameActions();
 
-  const enoughLetters = current.length >= playerIds.length;
-
   useEffect(() => {
     if (disabled || !myTurn) {
       return;
@@ -54,7 +52,7 @@ export const Keyboard = ({ disabled }: { disabled: boolean }) => {
               return (
                 <button
                   className={classes.action}
-                  disabled={disabled || !myTurn || !enoughLetters}
+                  disabled={disabled || !myTurn || current.length < 1}
                   key={letter}
                   onClick={() => challenge()}
                 >
@@ -65,7 +63,9 @@ export const Keyboard = ({ disabled }: { disabled: boolean }) => {
               return (
                 <button
                   className={classes.action}
-                  disabled={disabled || !myTurn || !enoughLetters}
+                  disabled={
+                    disabled || !myTurn || current.length <= playerIds.length
+                  }
                   key={letter}
                   onClick={() => declareVictory()}
                 >

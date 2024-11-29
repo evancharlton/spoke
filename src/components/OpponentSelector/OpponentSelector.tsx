@@ -2,8 +2,7 @@ import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { PlayersContext } from "./context";
 import { useMemo } from "react";
 import classes from "./OpponentSelector.module.css";
-import { PlayerId } from "../Players";
-import { PLAYERS } from "../Players/Players";
+import { PlayerId, PLAYERS } from "../Players";
 
 const Opponent = ({
   id,
@@ -32,13 +31,13 @@ export const OpponentSelector = () => {
       <h2>Velg en motstander!</h2>
       <p>Alle motstandene vet samme ord, men spiller forskellige.</p>
       <div className={classes.opponents}>
-        <Opponent id="r" name="Tilfeldig" icon="🎲">
-          Velger en gyldig bokstav tilfeldig. Vil innrømme å tape.
-        </Opponent>
-        <Opponent id="t" name="Tilfeldig #2" icon="🎲🎲">
-          Velger en gyldig bokstav tilfeldig, men vil ikke innrømme nederlag før
-          konfrontert.
-        </Opponent>
+        {Object.entries(PLAYERS)
+          .filter(([_, { unpickable }]) => !unpickable)
+          .map(([id, { name, icon, description }]) => (
+            <Opponent key={id} id={id} name={name} icon={icon}>
+              {description}
+            </Opponent>
+          ))}
       </div>
     </div>
   );

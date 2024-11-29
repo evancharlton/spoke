@@ -1,0 +1,13 @@
+.container {
+  background-color: var(--highlight-color);
+  width: 100%;
+}
+
+.container h1 {
+  margin: 4px;
+  font-size: 3em;
+
+  a {
+    color: currentColor;
+  }
+}
