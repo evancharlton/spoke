@@ -50,9 +50,9 @@ export const GameOverDialog = () => {
       return (
         <Modal>
           <p>
-            {loserInfo.name} prøvde å stave{" "}
-            <span className={classes.unknownWord}>{endingWord}</span>, som er
-            ukjent.
+            {loserInfo.name} ble utfordet til å avsløre et ord som begynnt med{" "}
+            {current}.<span className={classes.unknownWord}>{endingWord}</span>{" "}
+            ble avslørt, og er ikke kjent.
           </p>
           <p>
             Imidlertid kunne <NaobLink word={possibility} /> vært stavet i
@@ -66,12 +66,10 @@ export const GameOverDialog = () => {
       return (
         <Modal>
           <p>
-            {loserInfo.name} utfordret {previousInfo.name} til å avsløre deres
-            ord.
+            {loserInfo.name} ble utfordret til å avsløre deres ord og{" "}
+            <NaobLink word={endingWord} /> er gyldig.
           </p>
-          <p>
-            De stavet mot <NaobLink word={endingWord} /> og vant runden.
-          </p>
+          <p>{previousInfo.name} har tapte delle runden.</p>
         </Modal>
       );
     }
@@ -82,7 +80,7 @@ export const GameOverDialog = () => {
           <p>
             {loserInfo.name} hevdet at{" "}
             <span className={classes.unknownWord}>{current}</span> var et ord,
-            men det er ukjent.
+            men det er ikke kjent.
           </p>
           <p>
             Det kunne imidlertid vært brukt til å stave{" "}
