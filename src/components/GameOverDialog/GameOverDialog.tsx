@@ -69,10 +69,10 @@ export const GameOverDialog = () => {
       return (
         <Modal>
           <p>
-            {loserInfo.name} ble utfordret til å avsløre deres ord og{" "}
+            {previousInfo.name} ble utfordret til å avsløre deres ord og{" "}
             <NaobLink word={endingWord} /> er gyldig.
           </p>
-          <p>{previousInfo.name} har tapte delle runden.</p>
+          <p>{loserInfo.name} har tapte delle runden.</p>
         </Modal>
       );
     }
