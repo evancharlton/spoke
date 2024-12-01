@@ -42,6 +42,8 @@
   margin-right: 8px;
   background-color: transparent;
   transition: filter 0.25s;
+
+  max-height: 40px;
 }
 
 .container button:hover,

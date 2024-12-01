@@ -9,8 +9,11 @@
 }
 
 .keyboard button {
-  padding: auto 8px;
-  border-radius: 2px;
+  border-radius: 0px;
   min-height: 4rem;
-  border-color: white;
+  border-color: #999e;
+}
+
+.keyboard button:disabled {
+  filter: brightness(0.4);
 }
