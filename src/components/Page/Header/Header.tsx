@@ -6,7 +6,10 @@ export const Header = () => {
   return (
     <div className={classes.container}>
       <h1>
-        <Link to="/">Spøke</Link>
+        <Link to="/">
+          <img src="/ghost.svg" width="32" height="32" />
+          Spøke
+        </Link>
       </h1>
       <HelpDialog />
     </div>
