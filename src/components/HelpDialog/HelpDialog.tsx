@@ -50,6 +50,10 @@ export const HelpDialog = () => {
             <li>kreve seier (🎉) og erklære at a er fullført</li>
           </ul>
         </div>
+        <div className={classes.version}>
+          Versjon
+          <code>{import.meta.env.VITE_RELEASE ?? "development"}</code>
+        </div>
       </dialog>
     </>
   );
