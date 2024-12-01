@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Trie } from "../../../trie";
 import { useParams } from "react-router-dom";
 import { TrieContext } from "./context";
+import classes from "./TrieProvider.module.css";
 
 export const TrieProvider = ({ children }: { children: React.ReactNode }) => {
   const { lang } = useParams();
@@ -20,11 +21,19 @@ export const TrieProvider = ({ children }: { children: React.ReactNode }) => {
   }, [lang]);
 
   if (error) {
-    return <pre>{error.stack ?? "<error>"}</pre>;
+    console.error(error);
+    return <div className={classes.container}>⚠️</div>;
   }
 
   if (!trie) {
-    return <pre>Loading ...</pre>;
+    return (
+      <div className={classes.container}>
+        <div className={classes.ripple}>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
   }
 
   return <TrieContext.Provider value={trie}>{children}</TrieContext.Provider>;
