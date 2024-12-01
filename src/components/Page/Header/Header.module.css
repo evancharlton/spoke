@@ -1,7 +1,7 @@
 .container {
   width: 100%;
 
-  background-color: var(--highlight-color);
+  background-color: hsl(from var(--highlight-color) h 90% l);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -47,4 +47,25 @@
 .container button:hover,
 .container button:focus-visible {
   filter: drop-shadow(0px 0px 2px #fff);
+}
+
+.container button.update {
+  animation: 2s ease-in-out 1s infinite pulse;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+
+  100% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
 }

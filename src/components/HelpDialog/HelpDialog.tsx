@@ -41,16 +41,14 @@ export const HelpDialog = () => {
             <li>Når en spiller fullfører «SPØKE», taper de spillet.</li>
           </ol>
 
-          <p>
-            I stedet for å legge til en bokstav, kan en spiller:
-            <ul>
-              <li>
-                utfordre (🤔) og kreve at den forrige spilleren avslører ordet
-                sitt
-              </li>
-              <li>kreve seier (🎉) og erklære at a er fullført</li>
-            </ul>
-          </p>
+          <p>I stedet for å legge til en bokstav, kan en spiller:</p>
+          <ul>
+            <li>
+              utfordre (🤔) og kreve at den forrige spilleren avslører ordet
+              sitt
+            </li>
+            <li>kreve seier (🎉) og erklære at a er fullført</li>
+          </ul>
         </div>
       </dialog>
     </>
