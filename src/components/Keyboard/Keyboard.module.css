@@ -15,5 +15,5 @@
 }
 
 .keyboard button:disabled {
-  filter: brightness(0.4);
+  filter: opacity(0.3);
 }
