@@ -25,7 +25,9 @@ export const PlayerContext = createContext<
 export const usePlayerId = () => {
   const context = useContext(PlayerContext);
   if (!context) {
-    throw new Error("Invalid player ID specified");
+    throw new Error(
+      "Cannot use usePlayerId(..) outside of <PlayerContext.Provider .. />"
+    );
   }
   return context.id;
 };
@@ -33,7 +35,9 @@ export const usePlayerId = () => {
 export const usePlayerName = () => {
   const context = useContext(PlayerContext);
   if (!context) {
-    throw new Error("Invalid player name specified");
+    throw new Error(
+      "Cannot use usePlayerName(..) outside of <PlayerContext.Provider .. />"
+    );
   }
   return context.name;
 };

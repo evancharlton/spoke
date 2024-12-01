@@ -1,19 +1,14 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { Trie } from "../../trie";
+import { useEffect, useState } from "react";
+import { Trie } from "../../../trie";
 import { useParams } from "react-router-dom";
-
-const TrieContext = createContext<Trie | undefined>(undefined);
-
-export const useTrie = () => {
-  const trie = useContext(TrieContext);
-  if (!trie) {
-    throw new Error("Must be used inside of <TrieProvider />!");
-  }
-  return trie;
-};
+import { TrieContext } from "./context";
 
 export const TrieProvider = ({ children }: { children: React.ReactNode }) => {
   const { lang } = useParams();
+  if (!lang) {
+    throw new Error("Missing language parameter");
+  }
+
   const [error, setError] = useState<Error | undefined>();
   const [trie, setTrie] = useState<Trie | undefined>(undefined);
 

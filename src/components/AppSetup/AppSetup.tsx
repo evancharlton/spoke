@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { TrieProvider } from "./TrieProvider";
+import { TrieProvider } from "./TrieProvider/TrieProvider";
 
 export const AppSetup = () => {
   return (
