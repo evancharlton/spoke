@@ -52,6 +52,16 @@ export const useGame = () => {
   return context;
 };
 
+export const useNewGame = () => {
+  const context = useContext(GameActionsContext);
+  if (!context) {
+    throw new Error(
+      "useGameActions() must be used inside of <GameActionsContext.Provider />!"
+    );
+  }
+  return context.newGame;
+};
+
 export const useGameActions = (): ContextType<typeof GameActionsContext> & {
   myTurn: boolean;
 } => {

@@ -3,3 +3,9 @@
   opacity: 30%;
   text-wrap: pretty;
 }
+
+.gameOverContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
