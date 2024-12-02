@@ -19,7 +19,9 @@ const GameOverInfo = () => {
   return (
     <div className={classes.gameOverContainer}>
       <h3>{playerInfo(loser).name} tapte</h3>
-      <Link to="..">Begynn på nytt</Link>
+      <Link to=".." replace>
+        Begynn på nytt
+      </Link>
     </div>
   );
 };

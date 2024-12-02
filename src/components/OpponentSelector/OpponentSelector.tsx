@@ -16,7 +16,7 @@ const Opponent = ({
   children: React.ReactNode;
 }) => {
   return (
-    <Link to={`./${id}`}>
+    <Link to={`./${id}`} replace>
       <h3>
         {icon} {name}
       </h3>
@@ -28,7 +28,7 @@ const Opponent = ({
 export const OpponentSelector = () => {
   return (
     <div className={classes.container}>
-      <h2>Velg en motstander!</h2>
+      <h2>Velg din motstander!</h2>
       <p>Alle motstandene vet samme ord, men spiller forskellige.</p>
       <div className={classes.opponents}>
         {Object.entries(PLAYERS)
