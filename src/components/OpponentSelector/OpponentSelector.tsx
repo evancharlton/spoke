@@ -69,7 +69,7 @@ export const OpponentSelector = () => {
         className={classes.start}
       >
         {selected.length === 0
-          ? "Overraske meg"
+          ? "Overrask meg"
           : selected.map((id) => PLAYERS[id].icon).join(" ")}
       </Link>
     </div>
