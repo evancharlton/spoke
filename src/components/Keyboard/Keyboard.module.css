@@ -2,6 +2,8 @@
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   grid-template-rows: repeat(3, 1fr);
+  background-color: #999a;
+  gap: 1px;
 }
 
 .action {
@@ -11,9 +13,22 @@
 .keyboard button {
   border-radius: 0px;
   min-height: 4rem;
-  border-color: #999e;
+  border-color: transparent;
+
+  border-top-width: 1px;
+  border-left-width: 1px;
+  border-bottom-width: 0px;
+  border-right-width: 0px;
+
+  outline: 1px solid transparent;
+  transition: outline 0.25s;
 }
 
 .keyboard button:disabled {
   filter: opacity(0.3);
+}
+
+.keyboard button:hover,
+.keyboard button:focus-visible {
+  outline: 1px solid #fff;
 }
