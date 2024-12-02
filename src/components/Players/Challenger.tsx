@@ -1,11 +1,10 @@
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, useCallback } from "react";
 import { Trie, possibleWord, walk, nodeOptions } from "../../trie";
-import { useTrie } from "../AppSetup/TrieProvider";
 import { useGame, useGameActions, Action } from "../GameLogic";
+import { usePlay } from "./usePlay";
 
 export const Challenger = () => {
-  const trie = useTrie();
-  const { current, actions } = useGame();
+  const { actions } = useGame();
   const { addLetter, challenge, answerChallenge, declareVictory, myTurn } =
     useGameActions();
 
@@ -68,13 +67,6 @@ export const Challenger = () => {
     [addLetter, answerChallenge, challenge, declareVictory, myTurn]
   );
 
-  useEffect(() => {
-    if (myTurn) {
-      const id = setTimeout(() => play(trie, current), 500);
-      return () => {
-        clearTimeout(id);
-      };
-    }
-  }, [current, myTurn, play, trie]);
+  usePlay(play);
   return null;
 };

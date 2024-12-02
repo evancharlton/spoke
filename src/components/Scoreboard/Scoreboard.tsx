@@ -6,16 +6,19 @@ import { Fragment } from "react/jsx-runtime";
 const LETTERS = ["s", "p", "ø", "k", "e"] as const;
 
 export const Scoreboard = () => {
-  const { playerIds, losses } = useGame();
+  const { playerIds, losses, player } = useGame();
   const playerInfo = usePlayerInfo();
   return (
     <div
       className={classes.container}
       style={{ gridTemplateRows: `repeat(${(playerIds.length, "auto")})` }}
     >
-      {playerIds.map((id) => (
+      {playerIds.map((id, i) => (
         <Fragment key={id}>
-          <strong className={classes.player}>{playerInfo(id).name}</strong>
+          <strong className={classes.player}>
+            {player === i ? "👉 " : null}
+            {playerInfo(id).name}
+          </strong>
           {LETTERS.map((letter, i) => (
             <div
               key={`${id}-${letter}`}

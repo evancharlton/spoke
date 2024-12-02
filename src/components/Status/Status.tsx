@@ -27,7 +27,7 @@ const GameOverInfo = () => {
 };
 
 export const Status = () => {
-  const { gameOver, current } = useGame();
+  const { gameOver, current, endingWord } = useGame();
 
   return (
     <>
@@ -35,7 +35,7 @@ export const Status = () => {
       {gameOver ? (
         <GameOverInfo />
       ) : (
-        <h1 className={classes.input}>{current}</h1>
+        <h1 className={classes.input}>{endingWord || current}</h1>
       )}
     </>
   );

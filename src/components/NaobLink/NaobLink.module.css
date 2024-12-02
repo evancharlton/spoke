@@ -1,0 +1,23 @@
+.link {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 2px;
+
+  align-items: top;
+
+  border: 1px solid transparent;
+  padding: 2px 4px;
+  border-radius: 8px;
+}
+
+.link:hover,
+.link:focus-visible {
+  text-decoration: none;
+  border-color: var(--highlight-color);
+  box-shadow: 0px 0px 4px var(--highlight-color);
+}
+
+.link svg {
+  font-size: 0.8em;
+  color: #999;
+}

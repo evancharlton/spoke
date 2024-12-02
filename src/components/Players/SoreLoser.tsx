@@ -1,12 +1,11 @@
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, useCallback } from "react";
 import { Trie, possibleWord, walk, nodeOptions } from "../../trie";
-import { useTrie } from "../AppSetup/TrieProvider";
 import { useGame, useGameActions, Action } from "../GameLogic";
 import { LETTERS } from "../../letters";
+import { usePlay } from "./usePlay";
 
 export const SoreLoser = () => {
-  const trie = useTrie();
-  const { current, actions } = useGame();
+  const { actions } = useGame();
   const { addLetter, challenge, answerChallenge, declareVictory, myTurn } =
     useGameActions();
 
@@ -16,6 +15,7 @@ export const SoreLoser = () => {
   const play = useCallback(
     (root: Trie, current: string) => {
       if (!myTurn) {
+        console.error(`It's not SoreLoser's turn`);
         throw new Error("It's not my turn");
       }
 
@@ -24,9 +24,8 @@ export const SoreLoser = () => {
         const word = possibleWord(root, current);
         if (word) {
           answerChallenge(word);
-        } else {
-          answerChallenge(current);
         }
+        answerChallenge(current);
         return;
       }
 
@@ -82,14 +81,7 @@ export const SoreLoser = () => {
     [addLetter, answerChallenge, challenge, declareVictory, myTurn]
   );
 
-  useEffect(() => {
-    if (myTurn) {
-      const id = setTimeout(() => play(trie, current), 500);
-      return () => {
-        clearTimeout(id);
-      };
-    }
-  }, [current, myTurn, play, trie]);
+  usePlay(play);
 
   return null;
 };

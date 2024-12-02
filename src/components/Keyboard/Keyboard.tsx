@@ -4,6 +4,7 @@ import classes from "./Keyboard.module.css";
 import { Letter } from "../../trie";
 import { neverGuard } from "../../utils";
 import { isLetter } from "../../letters";
+import { MINIMUM_WORD_LENGTH } from "../GameLogic/constants";
 
 const LAYOUT = [
   ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å"],
@@ -12,7 +13,7 @@ const LAYOUT = [
 ] as const;
 
 export const Keyboard = ({ disabled }: { disabled: boolean }) => {
-  const { current, playerIds } = useGame();
+  const { current } = useGame();
   const { addLetter, myTurn, challenge, declareVictory } = useGameActions();
 
   useEffect(() => {
@@ -64,7 +65,7 @@ export const Keyboard = ({ disabled }: { disabled: boolean }) => {
                 <button
                   className={classes.action}
                   disabled={
-                    disabled || !myTurn || current.length <= playerIds.length
+                    disabled || !myTurn || current.length < MINIMUM_WORD_LENGTH
                   }
                   key={letter}
                   onClick={() => declareVictory()}

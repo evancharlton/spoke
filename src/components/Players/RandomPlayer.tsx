@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useRef } from "react";
-import { useTrie } from "../AppSetup/TrieProvider";
+import { useCallback, useRef } from "react";
 import { nodeOptions, possibleWord, Trie, walk } from "../../trie";
 import { useGame, useGameActions } from "../GameLogic/context";
 import { Action } from "../GameLogic";
+import { usePlay } from "./usePlay";
 
 // const remaining = (root: Trie, current: string) => {
 //   const start = walk(root, current);
@@ -24,8 +24,7 @@ import { Action } from "../GameLogic";
 // };
 
 const useRandom = ({ giveUp }: { giveUp: boolean }) => {
-  const trie = useTrie();
-  const { current, actions } = useGame();
+  const { actions } = useGame();
   const {
     addLetter,
     admitDefeat,
@@ -49,9 +48,8 @@ const useRandom = ({ giveUp }: { giveUp: boolean }) => {
         const word = possibleWord(root, current);
         if (word) {
           answerChallenge(word);
-        } else {
-          answerChallenge(current);
         }
+        answerChallenge(current);
         return;
       }
 
@@ -80,9 +78,9 @@ const useRandom = ({ giveUp }: { giveUp: boolean }) => {
       const next = node[letter];
       if (giveUp && next?._?.length) {
         admitDefeat(next._[0]);
-      } else {
-        addLetter(letter);
+        return;
       }
+      addLetter(letter);
     },
     [
       addLetter,
@@ -95,14 +93,8 @@ const useRandom = ({ giveUp }: { giveUp: boolean }) => {
     ]
   );
 
-  useEffect(() => {
-    if (myTurn) {
-      const id = setTimeout(() => play(trie, current), 500);
-      return () => {
-        clearTimeout(id);
-      };
-    }
-  }, [current, myTurn, play, trie]);
+  usePlay(play);
+  return null;
 };
 
 export const RandomPlayer = () => {

@@ -45,7 +45,6 @@ export const GameOverDialog = () => {
 
   switch (resolution) {
     case "challenge -> fake word": {
-      console.log(`TCL ~ GameOverDialog ~ trie:`, trie);
       const possibility = findAlternate(trie, endingWord);
 
       return (
@@ -98,7 +97,7 @@ export const GameOverDialog = () => {
       return (
         <Modal>
           <p>
-            {loserInfo.name} stavet ordet <NaobLink word={endingWord} />.
+            {loserInfo.name} stavet <NaobLink word={endingWord} />.
           </p>
         </Modal>
       );

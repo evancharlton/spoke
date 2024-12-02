@@ -2,7 +2,7 @@ import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { PlayersContext } from "./context";
 import { useMemo } from "react";
 import classes from "./OpponentSelector.module.css";
-import { PlayerId, PLAYERS } from "../Players";
+import { isPlayerId, PlayerId, PLAYERS } from "../Players";
 
 const Opponent = ({
   id,
@@ -49,19 +49,33 @@ export const OpponentProvider = () => {
     throw new Error("Wrong routing");
   }
 
-  const ids = useMemo(
-    () => ["human", opponentId as PlayerId] satisfies PlayerId[],
-    [opponentId]
-  );
-
   const navigate = useNavigate();
-  if (!PLAYERS[opponentId as PlayerId]) {
-    navigate(`/${lang}`);
+
+  const ids = useMemo(() => {
+    const opponentIds: PlayerId[] = opponentId
+      .split("")
+      .filter((v) => isPlayerId(v));
+
+    const uniques = new Set(opponentIds);
+    if (uniques.size !== opponentIds.length) {
+      navigate(`/${lang}`, { state: "unknown-players" });
+      return [];
+    }
+
+    if (opponentIds.length === 0) {
+      navigate(`/${lang}`, { state: "no-known-opponents" });
+      return [];
+    }
+
+    return ["human", ...opponentIds] satisfies PlayerId[];
+  }, [lang, navigate, opponentId]);
+
+  if (ids.length === 0) {
     return null;
   }
 
   return (
-    <PlayersContext.Provider value={ids}>
+    <PlayersContext.Provider key={ids.join("")} value={ids}>
       <Outlet />
     </PlayersContext.Provider>
   );

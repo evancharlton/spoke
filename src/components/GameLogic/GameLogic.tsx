@@ -5,6 +5,7 @@ import { firstWord, Letter, possibleWord, walk } from "../../trie";
 import { useTrie } from "../AppSetup/TrieProvider";
 import { usePlayerIds } from "../OpponentSelector/context";
 import { PlayerId } from "../Players";
+import { MINIMUM_WORD_LENGTH } from "./constants";
 
 export const GameLogic = ({ children }: { children: React.ReactNode }) => {
   const playerIds = usePlayerIds();
@@ -20,15 +21,23 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     gameOver: false,
   } satisfies GameState);
 
-  const numPlayers = state.playerIds.length;
+  const { current, resolution } = state;
+  const roundOver = !!resolution;
 
-  const { current } = state;
-
-  const addLetter = useCallback((letter: Letter) => {
-    dispatch({ move: "add-letter", letter: letter.toLowerCase() as Letter });
-  }, []);
+  const addLetter = useCallback(
+    (letter: Letter) => {
+      if (roundOver) {
+        throw new Error("Cannot play (addLetter) when the round is over");
+      }
+      dispatch({ move: "add-letter", letter: letter.toLowerCase() as Letter });
+    },
+    [roundOver]
+  );
 
   const challenge = useCallback(() => {
+    if (roundOver) {
+      throw new Error("Cannot play (challenge) when the round is over");
+    }
     try {
       const busted = firstWord(trie, current);
       if (busted) {
@@ -40,12 +49,17 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
       // we know about, so pass it back to the player to verify.
     }
     dispatch({ move: "challenge" });
-  }, [current, trie]);
+  }, [current, roundOver, trie]);
 
   const declareVictory = useCallback(() => {
-    if (current.length < numPlayers) {
+    if (roundOver) {
+      throw new Error("Cannot play (declareVictory) when the round is over");
+    }
+    if (current.length < MINIMUM_WORD_LENGTH) {
       // This is impossible - you can't declare victory so soon.
-      return;
+      throw new Error(
+        `Cannot declare victory before ${MINIMUM_WORD_LENGTH} letters`
+      );
     }
 
     const node = walk(trie, current);
@@ -79,15 +93,24 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
         possibleWord: "<impossible situation>",
       });
     }
-  }, [challenge, current, numPlayers, trie]);
+  }, [challenge, current, roundOver, trie]);
 
   /** Used by robots when they know they're playing a losing word. */
-  const admitDefeat = useCallback((word: string) => {
-    dispatch({ move: "defeated", word });
-  }, []);
+  const admitDefeat = useCallback(
+    (word: string) => {
+      if (roundOver) {
+        throw new Error("Cannot play (admitDefeat) when the round is over");
+      }
+      dispatch({ move: "defeated", word });
+    },
+    [roundOver]
+  );
 
   const answerChallenge = useCallback(
     (word: string) => {
+      if (roundOver) {
+        throw new Error("Cannot play (answerChallenge) when the round is over");
+      }
       const node = walk(trie, word);
       if (node?._?.length) {
         dispatch({ move: "challenge -> real word", word });
@@ -95,7 +118,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
         dispatch({ move: "challenge -> fake word", word });
       }
     },
-    [trie]
+    [roundOver, trie]
   );
 
   const newRound = useCallback(() => {

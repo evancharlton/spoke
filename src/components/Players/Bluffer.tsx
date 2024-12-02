@@ -1,19 +1,17 @@
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, useCallback } from "react";
 import { Trie, possibleWord, walk, nodeOptions } from "../../trie";
-import { useTrie } from "../AppSetup/TrieProvider";
 import { useGame, useGameActions, Action } from "../GameLogic";
 import { LETTERS } from "../../letters";
+import { MINIMUM_WORD_LENGTH } from "../GameLogic/constants";
+import { usePlay } from "./usePlay";
 
 export const Bluffer = () => {
-  const trie = useTrie();
-  const { current, actions, playerIds } = useGame();
+  const { actions } = useGame();
   const { addLetter, challenge, answerChallenge, declareVictory, myTurn } =
     useGameActions();
 
   const lastAction = useRef<Action | undefined>();
   lastAction.current = actions[0];
-
-  const numPlayers = playerIds.length;
 
   const play = useCallback(
     (root: Trie, current: string) => {
@@ -68,7 +66,7 @@ export const Bluffer = () => {
         // Otherwise, fall through.
       }
 
-      if (choice === 1 && current.length > numPlayers) {
+      if (choice === 1 && current.length >= MINIMUM_WORD_LENGTH) {
         // Don't even think - just challenge.
         challenge();
         return;
@@ -77,16 +75,10 @@ export const Bluffer = () => {
       // Otherwise, just play
       addLetter(options[Math.floor(Math.random() * options.length)]);
     },
-    [addLetter, answerChallenge, challenge, declareVictory, myTurn, numPlayers]
+    [addLetter, answerChallenge, challenge, declareVictory, myTurn]
   );
 
-  useEffect(() => {
-    if (myTurn) {
-      const id = setTimeout(() => play(trie, current), 500);
-      return () => {
-        clearTimeout(id);
-      };
-    }
-  }, [current, myTurn, play, trie]);
+  usePlay(play);
+
   return null;
 };
