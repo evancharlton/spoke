@@ -1,44 +1,77 @@
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import { PlayersContext } from "./context";
-import { useMemo } from "react";
+import { useMemo, useRef, useState } from "react";
 import classes from "./OpponentSelector.module.css";
 import { isPlayerId, PlayerId, PLAYERS } from "../Players";
 
-const Opponent = ({
-  id,
-  name,
-  icon,
-  children,
-}: {
-  id: PlayerId;
-  name: string;
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}) => {
-  return (
-    <Link to={`./${id}`} replace>
-      <h3>
-        {icon} {name}
-      </h3>
-      <p>{children}</p>
-    </Link>
-  );
-};
+const PLAYER_IDS = Object.keys(PLAYERS).filter((id) => !PLAYERS[id].unpickable);
 
 export const OpponentSelector = () => {
+  const [selected, setSelected] = useState<PlayerId[]>([]);
+  const messageRef = useRef<HTMLParagraphElement | null>(null);
+  const startPositionRef = useRef<number | undefined>(0);
+
+  const [stuck, setStuck] = useState(false);
+
   return (
-    <div className={classes.container}>
-      <h2>Velg din motstander!</h2>
-      <p>Alle motstandene vet samme ord, men spiller forskellige.</p>
+    <div
+      className={classes.container}
+      onScroll={() => {
+        setStuck(
+          (messageRef.current?.offsetTop ?? 0) > (startPositionRef.current ?? 0)
+        );
+      }}
+    >
+      <h2>Velg dine motstandere</h2>
+      <p
+        className={stuck ? classes.stuck : undefined}
+        ref={(ref) => {
+          messageRef.current = ref;
+          startPositionRef.current = ref?.offsetTop;
+        }}
+      >
+        Alle motstandene vet samme ord, men spiller forskellige.
+      </p>
       <div className={classes.opponents}>
         {Object.entries(PLAYERS)
           .filter(([_, { unpickable }]) => !unpickable)
           .map(([id, { name, icon, description }]) => (
-            <Opponent key={id} id={id} name={name} icon={icon}>
-              {description}
-            </Opponent>
+            <button
+              key={id}
+              onClick={() =>
+                setSelected((v) =>
+                  v.includes(id) ? v.filter((i) => i !== id) : [...v, id]
+                )
+              }
+              className={[
+                classes.opponent,
+                selected.includes(id) ? classes.added : false,
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              <h3>
+                {icon} {name}
+              </h3>
+              <p>{description}</p>
+            </button>
           ))}
       </div>
+      <div className={classes.spacer}></div>
+
+      <Link
+        to={`./${
+          selected.length === 0
+            ? PLAYER_IDS[Math.floor(Math.random() * PLAYER_IDS.length)]
+            : selected.join("")
+        }`}
+        replace
+        className={classes.start}
+      >
+        {selected.length === 0
+          ? "Overraske meg"
+          : selected.map((id) => PLAYERS[id].icon).join(" ")}
+      </Link>
     </div>
   );
 };

@@ -7,12 +7,28 @@
   justify-content: flex-start;
 
   padding-top: 16px;
+  position: relative;
+  overflow-y: auto;
 }
 
-.container h2,
-.container p {
-  margin: 0 16px;
-  text-wrap: pretty;
+.spacer {
+  border: 1px solid green;
+  flex: 1;
+}
+
+.container > p {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  background-color: var(--background-color);
+  padding: 1em;
+  margin: 0;
+
+  border-radius: 8px;
+}
+
+.stuck {
+  box-shadow: 0px 0px 8px var(--drop-shadow);
 }
 
 .opponents {
@@ -46,4 +62,60 @@
 
 .container a p {
   text-wrap: pretty;
+}
+
+.added {
+  position: relative;
+
+  background-image: radial-gradient(
+    circle at top right,
+    rgba(from var(--highlight-color) r g b / 20%) 5%,
+    var(--background-color) 80%
+  );
+
+  transition: background-color 0.25s;
+}
+
+.added::after {
+  content: "✅";
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 8px;
+  margin-right: 8px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.opponent p {
+  text-wrap: pretty;
+}
+
+.opponent:hover,
+.opponent:focus-visible {
+  text-decoration: none;
+}
+
+.start {
+  position: sticky;
+  bottom: 0;
+
+  margin: 0;
+  padding: 0;
+
+  align-self: stretch;
+  border: 1px solid red;
+  background-color: var(--background-color);
+  box-shadow: 0px 0px 4px var(--drop-shadow);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  text-transform: uppercase;
 }
