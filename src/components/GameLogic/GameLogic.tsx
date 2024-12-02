@@ -21,7 +21,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     gameOver: false,
   } satisfies GameState);
 
-  const { current, resolution } = state;
+  const { current, resolution, gameOver } = state;
   const roundOver = !!resolution;
 
   const addLetter = useCallback(
@@ -122,8 +122,11 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
   );
 
   const newRound = useCallback(() => {
+    if (gameOver) {
+      return;
+    }
     dispatch({ move: "new-round" });
-  }, []);
+  }, [gameOver]);
 
   const newGame = useCallback(() => {
     dispatch({ move: "new-game" });
