@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  background-color: #999a;
+  background-color: transparent;
   gap: 1px;
 }
 
@@ -30,5 +30,5 @@
 
 .keyboard button:hover,
 .keyboard button:focus-visible {
-  outline: 1px solid #fff;
+  outline: 1px solid currentColor;
 }
