@@ -70,7 +70,8 @@ export const GameOverDialog = () => {
         <Modal>
           <p>
             {previousInfo.name} ble utfordret til å avsløre deres ord og{" "}
-            <NaobLink word={endingWord} /> er gyldig.
+            <NaobLink word={endingWord} /> kan ble stavet fra{" "}
+            <code>{current}</code>.
           </p>
           <p>{loserInfo.name} har tapte delle runden.</p>
         </Modal>
