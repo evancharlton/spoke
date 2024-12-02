@@ -52,7 +52,7 @@ export const Keyboard = ({ disabled }: { disabled: boolean }) => {
               return (
                 <button
                   className={classes.action}
-                  disabled={disabled || !myTurn || current.length < 1}
+                  disabled={disabled || !myTurn || current.length < 2}
                   key={letter}
                   onClick={() => challenge()}
                 >
