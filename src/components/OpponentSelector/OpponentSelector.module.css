@@ -118,3 +118,9 @@
 
   text-transform: uppercase;
 }
+
+@media (min-height: 1000px) {
+  .spacer {
+    flex: 0;
+  }
+}
