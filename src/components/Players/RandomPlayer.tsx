@@ -3,6 +3,7 @@ import { nodeOptions, possibleWord, Trie, walk } from "../../trie";
 import { useGame, useGameActions } from "../GameLogic/context";
 import { Action } from "../GameLogic";
 import { usePlay } from "./usePlay";
+import { randomItem } from "../../arrays";
 
 // const remaining = (root: Trie, current: string) => {
 //   const start = walk(root, current);
@@ -69,7 +70,7 @@ const useRandom = ({ giveUp }: { giveUp: boolean }) => {
         return;
       }
 
-      const letter = options[Math.floor(Math.random() * options.length)];
+      const letter = randomItem(options);
       if (!letter) {
         throw new Error("Something went wrong picking a random letter");
       }

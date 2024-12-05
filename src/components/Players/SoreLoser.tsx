@@ -3,6 +3,7 @@ import { Trie, possibleWord, walk, nodeOptions } from "../../trie";
 import { useGame, useGameActions, Action } from "../GameLogic";
 import { LETTERS } from "../../letters";
 import { usePlay } from "./usePlay";
+import { randomItem } from "../../arrays";
 
 export const SoreLoser = () => {
   const { actions } = useGame();
@@ -58,7 +59,7 @@ export const SoreLoser = () => {
       });
 
       if (safeOptions.length > 0) {
-        addLetter(safeOptions[Math.floor(Math.random() * safeOptions.length)]);
+        addLetter(randomItem(safeOptions));
         return;
       }
 
@@ -68,15 +69,13 @@ export const SoreLoser = () => {
         (letter) => !options.includes(letter)
       );
       if (imaginaryLetters.length) {
-        addLetter(
-          imaginaryLetters[Math.floor(Math.random() * imaginaryLetters.length)]
-        );
+        addLetter(randomItem(imaginaryLetters));
         return;
       }
 
       // There are no safe plays here. Let's just play it and hope that the
       // next player doesn't notice ...
-      addLetter(options[Math.floor(Math.random() * options.length)]);
+      addLetter(randomItem(options));
     },
     [addLetter, answerChallenge, challenge, declareVictory, myTurn]
   );

@@ -2,6 +2,7 @@ import { useRef, useCallback } from "react";
 import { Trie, possibleWord, walk, nodeOptions } from "../../trie";
 import { useGame, useGameActions, Action } from "../GameLogic";
 import { usePlay } from "./usePlay";
+import { randomItem } from "../../arrays";
 
 export const Challenger = () => {
   const { actions } = useGame();
@@ -61,7 +62,7 @@ export const Challenger = () => {
         // actually had a word in mind if if they were bluffing ...
         challenge();
       } else {
-        addLetter(safeOptions[Math.floor(Math.random() * safeOptions.length)]);
+        addLetter(randomItem(safeOptions));
       }
     },
     [addLetter, answerChallenge, challenge, declareVictory, myTurn]

@@ -4,6 +4,7 @@ import { useGame, useGameActions, Action } from "../GameLogic";
 import { LETTERS } from "../../letters";
 import { MINIMUM_WORD_LENGTH } from "../GameLogic/constants";
 import { usePlay } from "./usePlay";
+import { randomItem } from "../../arrays";
 
 export const Bluffer = () => {
   const { actions } = useGame();
@@ -55,11 +56,7 @@ export const Bluffer = () => {
           (letter) => !options.includes(letter)
         );
         if (imaginaryLetters.length > 0) {
-          addLetter(
-            imaginaryLetters[
-              Math.floor(Math.random() * imaginaryLetters.length)
-            ]
-          );
+          addLetter(randomItem(imaginaryLetters));
           return;
         }
 
@@ -73,7 +70,7 @@ export const Bluffer = () => {
       }
 
       // Otherwise, just play
-      addLetter(options[Math.floor(Math.random() * options.length)]);
+      addLetter(randomItem(options));
     },
     [addLetter, answerChallenge, challenge, declareVictory, myTurn]
   );

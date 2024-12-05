@@ -3,6 +3,7 @@ import { PlayersContext } from "./context";
 import { useMemo, useRef, useState } from "react";
 import classes from "./OpponentSelector.module.css";
 import { isPlayerId, PlayerId, PLAYERS } from "../Players";
+import { randomItem } from "../../arrays";
 
 const PLAYER_IDS = Object.keys(PLAYERS).filter((id) => !PLAYERS[id].unpickable);
 
@@ -61,9 +62,7 @@ export const OpponentSelector = () => {
 
       <Link
         to={`./${
-          selected.length === 0
-            ? PLAYER_IDS[Math.floor(Math.random() * PLAYER_IDS.length)]
-            : selected.join("")
+          selected.length === 0 ? randomItem(PLAYER_IDS) : selected.join("")
         }`}
         replace
         className={classes.start}
