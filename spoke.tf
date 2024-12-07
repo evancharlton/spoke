@@ -35,7 +35,7 @@ locals {
 resource "github_repository" "github_repo" {
   name         = "spoke"
   description  = "Spøke - a Norwegian ghost! 👻"
-  homepage_url = "https://${local.main_domain}"
+  homepage_url = "https://spøke.no/"
 
   visibility                  = "private"
   has_discussions             = false
