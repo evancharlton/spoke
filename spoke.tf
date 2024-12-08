@@ -216,3 +216,27 @@ resource "cloudflare_record" "ip6_redirect_www" {
   ttl     = 1
   type    = "AAAA"
 }
+
+resource "cloudflare_ruleset" "redirect_to_main" {
+  for_each = toset(local.redirects)
+
+  zone_id     = local.zones[each.value]
+  name        = "Redirect to ${local.main_domain}"
+  description = "Redirect to ${local.main_domain}"
+  kind        = "zone"
+  phase       = "http_request_dynamic_redirect"
+
+  rules {
+    action = "redirect"
+    action_parameters {
+      from_value {
+        preserve_query_string = true
+        status_code           = 302
+        target_url {
+          expression = "concat(\"https://${local.main_domain}\", http.request.uri.path)"
+        }
+      }
+    }
+    expression = "true"
+  }
+}
