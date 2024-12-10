@@ -173,7 +173,7 @@ resource "cloudflare_record" "github_challenge" {
 // This is unnecessary since GitHub Pages doesn't support multiple domains
 // anyway, but ... eh why not?
 resource "cloudflare_record" "github_challenge_redirect" {
-  zone_id = local.zones[local.main_domain]
+  zone_id = local.zones["spoke.no"]
   name    = "_github-pages-challenge-evancharlton"
   content = "\"f3527a5e6a653d0f3d699497ba2303\""
   proxied = false
