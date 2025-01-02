@@ -1,12 +1,12 @@
 import "./App.css";
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router";
 import Page from "./components/Page";
-import LanguageSelector from "./components/LanguageSelector";
+import LanguageSelector from "./spa-components/LanguageSelector";
 import AppSetup from "./components/AppSetup";
 import OpponentSelector from "./components/OpponentSelector";
 import Play from "./components/Play";
 import { OpponentProvider } from "./components/OpponentSelector/OpponentSelector";
-import { PwaContainer } from "./components/PwaContainer";
+import PwaContainer from "./spa-components/PwaContainer";
 
 function App() {
   return (

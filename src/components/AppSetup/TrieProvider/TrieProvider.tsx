@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Trie } from "../../../trie";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { TrieContext } from "./context";
 import classes from "./TrieProvider.module.css";
+import { Loader } from "../../../spa-components/Loader";
 
 export const TrieProvider = ({ children }: { children: React.ReactNode }) => {
   const { lang } = useParams();
@@ -26,14 +27,7 @@ export const TrieProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!trie) {
-    return (
-      <div className={classes.container}>
-        <div className={classes.ripple}>
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    );
+    return <Loader text="laster ned ..." />;
   }
 
   return <TrieContext.Provider value={trie}>{children}</TrieContext.Provider>;

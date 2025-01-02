@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { neverGuard } from "../../utils";
+import { neverGuard } from "../../spa-components/neverGuard";
 import {
   useCurrentPlayer,
   useGame,

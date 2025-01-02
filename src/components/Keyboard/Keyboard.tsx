@@ -2,7 +2,7 @@ import { Fragment, useEffect } from "react";
 import { useGame, useGameActions } from "../GameLogic/context";
 import classes from "./Keyboard.module.css";
 import { Letter } from "../../trie";
-import { neverGuard } from "../../utils";
+import { neverGuard } from "../../spa-components/neverGuard";
 import { isLetter } from "../../letters";
 import { MINIMUM_WORD_LENGTH } from "../GameLogic/constants";
 

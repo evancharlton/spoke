@@ -1,6 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
   font-weight: 400;
 
   color-scheme: light dark;
@@ -13,7 +12,14 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* colors */
-  --highlight-color: rgb(255, 141, 48);
+  --theme-color: rgb(255, 141, 48);
+  --highlight-color: var(--theme-color);
+
+  --header-background-color: var(--theme-color);
+  --header-button-color: #000;
+  --header-foreground-color: #000;
+  --header-shadow-color: #fff;
+
   --link-color: var(--highlight-color);
   --background-color: #242424;
   --drop-shadow: #999a;
@@ -24,6 +30,7 @@ a {
   color: var(--link-color);
   text-decoration: inherit;
 }
+
 a:hover,
 a:focus-visible {
   color: hsl(from var(--link-color) h s 50%);

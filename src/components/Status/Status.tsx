@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { useGame } from "../GameLogic";
 import { usePlayerInfo } from "../Players";
 import Scoreboard from "../Scoreboard";

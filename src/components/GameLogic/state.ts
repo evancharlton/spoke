@@ -1,5 +1,5 @@
 import { Letter } from "../../trie";
-import { neverGuard } from "../../utils";
+import { neverGuard } from "../../spa-components/neverGuard";
 import { PlayerId } from "../Players";
 
 export type Action =

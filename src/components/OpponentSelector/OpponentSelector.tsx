@@ -1,4 +1,4 @@
-import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router";
 import { PlayersContext } from "./context";
 import { useMemo, useRef, useState } from "react";
 import classes from "./OpponentSelector.module.css";

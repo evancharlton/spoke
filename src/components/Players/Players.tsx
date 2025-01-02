@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
 import { PlayerContext } from "../GameLogic/context";
 import { usePlayerIds } from "../OpponentSelector/context";
 import { PLAYERS } from "./data";
