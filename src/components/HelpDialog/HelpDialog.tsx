@@ -1,34 +1,33 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { MdHelpOutline } from "react-icons/md";
 import classes from "./HelpDialog.module.css";
-import { MdOutlineClose } from "react-icons/md";
+import { Modal } from "../../spa-components/Modal";
 
 const AUTO_OPEN_KEY = "spøke/help/last-shown";
 const AUTO_OPEN_INTERVAL = 31 * 24 * 60 * 60 * 1000;
 
 export const HelpDialog = () => {
-  const ref = useRef<HTMLDialogElement>(null);
+  const [showing, setShowing] = useState(false);
 
   useEffect(() => {
     const lastShownMillis = +(localStorage.getItem(AUTO_OPEN_KEY) || 0);
     if (Date.now() - lastShownMillis > AUTO_OPEN_INTERVAL) {
-      ref.current?.showModal();
+      setShowing(true);
       localStorage.setItem(AUTO_OPEN_KEY, String(Date.now()));
     }
   }, []);
 
   return (
     <>
-      <button onClick={() => ref.current?.showModal()}>
+      <button onClick={() => setShowing(true)}>
         <MdHelpOutline />
       </button>
-      <dialog ref={ref} className={classes.helpDialog}>
-        <div className={classes.header}>
-          <h2>Om Spøke</h2>
-          <button onClick={() => ref.current?.close()}>
-            <MdOutlineClose />
-          </button>
-        </div>
+      <Modal
+        open={showing}
+        className={classes.helpDialog}
+        title="Om Spøke"
+        onClose={() => setShowing(false)}
+      >
         <div className={classes.gameplay}>
           <ol>
             <li>
@@ -54,7 +53,7 @@ export const HelpDialog = () => {
           Versjon
           <code>{import.meta.env.VITE_RELEASE ?? "development"}</code>
         </div>
-      </dialog>
+      </Modal>
     </>
   );
 };
