@@ -10,7 +10,7 @@ import PwaContainer from "./spa-components/PwaContainer";
 
 function App() {
   return (
-    <PwaContainer>
+    <PwaContainer appId="spoke">
       <HashRouter>
         <Routes>
           <Route path="/" element={<Page />}>

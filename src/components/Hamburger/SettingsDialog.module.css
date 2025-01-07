@@ -1,0 +1,23 @@
+.languages {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    border: 1px solid currentColor;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+  }
+
+  a.active {
+    background-color: var(--theme-color);
+    color: var(--background-color);
+  }
+}
+
+h3.title {
+  display: block;
+  margin: 8px;
+}
