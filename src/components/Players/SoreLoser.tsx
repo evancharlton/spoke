@@ -66,7 +66,7 @@ export const SoreLoser = () => {
       // Any move we might take will end in our defeat. Let's just make up a
       // letter and see if the next player knows what they're doing ...
       const imaginaryLetters = LETTERS.filter(
-        (letter) => !options.includes(letter)
+        (letter) => !options.includes(letter),
       );
       if (imaginaryLetters.length) {
         addLetter(randomItem(imaginaryLetters));
@@ -77,7 +77,7 @@ export const SoreLoser = () => {
       // next player doesn't notice ...
       addLetter(randomItem(options));
     },
-    [addLetter, answerChallenge, challenge, declareVictory, myTurn]
+    [addLetter, answerChallenge, challenge, declareVictory, myTurn],
   );
 
   usePlay(play);

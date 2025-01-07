@@ -31,7 +31,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
       }
       dispatch({ move: "add-letter", letter: letter.toLowerCase() as Letter });
     },
-    [roundOver]
+    [roundOver],
   );
 
   const challenge = useCallback(() => {
@@ -58,7 +58,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
     if (current.length < MINIMUM_WORD_LENGTH) {
       // This is impossible - you can't declare victory so soon.
       throw new Error(
-        `Cannot declare victory before ${MINIMUM_WORD_LENGTH} letters`
+        `Cannot declare victory before ${MINIMUM_WORD_LENGTH} letters`,
       );
     }
 
@@ -103,7 +103,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
       }
       dispatch({ move: "defeated", word });
     },
-    [roundOver]
+    [roundOver],
   );
 
   const answerChallenge = useCallback(
@@ -118,7 +118,7 @@ export const GameLogic = ({ children }: { children: React.ReactNode }) => {
         dispatch({ move: "challenge -> fake word", word });
       }
     },
-    [roundOver, trie]
+    [roundOver, trie],
   );
 
   const newRound = useCallback(() => {

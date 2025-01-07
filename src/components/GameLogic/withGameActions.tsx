@@ -13,7 +13,7 @@ export const withGameActions = makeDecorator({
       parameters: actions = {},
     }: {
       parameters?: Partial<NonNullable<ContextType<typeof GameActionsContext>>>;
-    }
+    },
   ) => {
     const value: NonNullable<ContextType<typeof GameActionsContext>> = {
       addLetter: actions.addLetter ?? fn(),

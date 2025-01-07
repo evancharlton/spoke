@@ -8,7 +8,7 @@ export const withGameState = makeDecorator({
   wrapper: (
     storyFn,
     context,
-    { parameters: overrides = {} }: { parameters?: Partial<GameState> }
+    { parameters: overrides = {} }: { parameters?: Partial<GameState> },
   ) => {
     const state: GameState = {
       player: overrides.player ?? 0,

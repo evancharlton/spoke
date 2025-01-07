@@ -53,7 +53,7 @@ export const Bluffer = () => {
       if (choice === 0) {
         // Time to bluff - let's just add a random letter
         const imaginaryLetters = LETTERS.filter(
-          (letter) => !options.includes(letter)
+          (letter) => !options.includes(letter),
         );
         if (imaginaryLetters.length > 0) {
           addLetter(randomItem(imaginaryLetters));
@@ -72,7 +72,7 @@ export const Bluffer = () => {
       // Otherwise, just play
       addLetter(randomItem(options));
     },
-    [addLetter, answerChallenge, challenge, declareVictory, myTurn]
+    [addLetter, answerChallenge, challenge, declareVictory, myTurn],
   );
 
   usePlay(play);

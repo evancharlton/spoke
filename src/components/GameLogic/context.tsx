@@ -26,7 +26,7 @@ export const usePlayerId = () => {
   const context = useContext(PlayerContext);
   if (!context) {
     throw new Error(
-      "Cannot use usePlayerId(..) outside of <PlayerContext.Provider .. />"
+      "Cannot use usePlayerId(..) outside of <PlayerContext.Provider .. />",
     );
   }
   return context.id;
@@ -36,7 +36,7 @@ export const usePlayerName = () => {
   const context = useContext(PlayerContext);
   if (!context) {
     throw new Error(
-      "Cannot use usePlayerName(..) outside of <PlayerContext.Provider .. />"
+      "Cannot use usePlayerName(..) outside of <PlayerContext.Provider .. />",
     );
   }
   return context.name;
@@ -46,7 +46,7 @@ export const useGame = () => {
   const context = useContext(GameStateContext);
   if (!context) {
     throw new Error(
-      "useGame() must be used inside of <GameStateContext.Provider />!"
+      "useGame() must be used inside of <GameStateContext.Provider />!",
     );
   }
   return context;
@@ -56,7 +56,7 @@ export const useNewGame = () => {
   const context = useContext(GameActionsContext);
   if (!context) {
     throw new Error(
-      "useGameActions() must be used inside of <GameActionsContext.Provider />!"
+      "useGameActions() must be used inside of <GameActionsContext.Provider />!",
     );
   }
   return context.newGame;
@@ -69,7 +69,7 @@ export const useGameActions = (): ContextType<typeof GameActionsContext> & {
   const context = useContext(GameActionsContext);
   if (!context) {
     throw new Error(
-      "useGameActions() must be used inside of <GameActionsContext.Provider />!"
+      "useGameActions() must be used inside of <GameActionsContext.Provider />!",
     );
   }
 
@@ -97,6 +97,6 @@ export const useOtherPlayers = () => {
   const players = usePlayerIds();
   return useMemo(
     () => players.filter((_, i) => i !== player),
-    [player, players]
+    [player, players],
   );
 };

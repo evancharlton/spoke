@@ -91,7 +91,7 @@ const useRandom = ({ giveUp }: { giveUp: boolean }) => {
       declareVictory,
       giveUp,
       myTurn,
-    ]
+    ],
   );
 
   usePlay(play);

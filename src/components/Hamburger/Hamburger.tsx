@@ -95,7 +95,7 @@ export const Hamburger = () => {
 };
 
 const SettingsDialog = (
-  props: Pick<ComponentProps<typeof Modal>, "open" | "onClose">
+  props: Pick<ComponentProps<typeof Modal>, "open" | "onClose">,
 ) => {
   return (
     <Modal title="Instillinger" {...props}>
@@ -125,7 +125,7 @@ const SettingsDialog = (
 };
 
 const AboutDialog = (
-  props: Pick<ComponentProps<typeof Modal>, "open" | "onClose">
+  props: Pick<ComponentProps<typeof Modal>, "open" | "onClose">,
 ) => {
   return (
     <Modal title="Om Spøke" {...props}>

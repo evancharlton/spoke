@@ -29,7 +29,7 @@ export const ChallengeDialog = () => {
               value
                 .split("")
                 .filter((v) => isLetter(v))
-                .join("")
+                .join(""),
             );
           }}
           value={input}

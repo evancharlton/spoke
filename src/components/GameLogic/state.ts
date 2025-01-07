@@ -218,7 +218,7 @@ export const reducer: typeof stateReducer = (state, action) => {
   ];
 
   const loser = Object.keys(next.losses).filter(
-    (id) => next.losses[id as PlayerId] >= 5
+    (id) => next.losses[id as PlayerId] >= 5,
   )[0];
 
   if (loser) {

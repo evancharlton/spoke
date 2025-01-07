@@ -65,7 +65,7 @@ export const Challenger = () => {
         addLetter(randomItem(safeOptions));
       }
     },
-    [addLetter, answerChallenge, challenge, declareVictory, myTurn]
+    [addLetter, answerChallenge, challenge, declareVictory, myTurn],
   );
 
   usePlay(play);

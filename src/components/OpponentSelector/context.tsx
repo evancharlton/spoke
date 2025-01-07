@@ -7,7 +7,7 @@ export const usePlayerIds = () => {
   const players = useContext(PlayersContext);
   if (!players) {
     throw new Error(
-      "usePlayers() must live inside <PlayersContext.Provider ../>"
+      "usePlayers() must live inside <PlayersContext.Provider ../>",
     );
   }
 

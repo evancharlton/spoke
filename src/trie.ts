@@ -71,7 +71,7 @@ export const firstWord = (trie: Trie, current: string): string | undefined => {
 
 export const possibleWord = (
   trie: Trie,
-  current: string
+  current: string,
 ): string | undefined => {
   let node = walk(trie, current);
   if (!node) {

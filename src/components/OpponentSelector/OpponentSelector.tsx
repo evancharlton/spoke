@@ -19,7 +19,8 @@ export const OpponentSelector = () => {
       className={classes.container}
       onScroll={() => {
         setStuck(
-          (messageRef.current?.offsetTop ?? 0) > (startPositionRef.current ?? 0)
+          (messageRef.current?.offsetTop ?? 0) >
+            (startPositionRef.current ?? 0),
         );
       }}
     >
@@ -41,7 +42,7 @@ export const OpponentSelector = () => {
               key={id}
               onClick={() =>
                 setSelected((v) =>
-                  v.includes(id) ? v.filter((i) => i !== id) : [...v, id]
+                  v.includes(id) ? v.filter((i) => i !== id) : [...v, id],
                 )
               }
               className={[
