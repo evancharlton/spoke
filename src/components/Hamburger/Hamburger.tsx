@@ -6,11 +6,14 @@ import {
   MdOutlineInfo,
 } from "react-icons/md";
 import { useParams, useHref, NavLink, useNavigate } from "react-router";
-import { HamburgerMenu, Action } from "../../spa-components/HamburgerMenu";
+import {
+  HamburgerMenu,
+  Action,
+  Content,
+} from "../../spa-components/HamburgerMenu";
 import { OtherApps } from "../../spa-components/HamburgerMenu/OtherApps";
 import { Modal } from "../../spa-components/Modal";
 import { ShareDialog } from "../../spa-components/ShareDialog";
-import classes from "./Hamburger.module.css";
 import settingsClasses from "./SettingsDialog.module.css";
 import { useNewGame } from "../GameLogic/context";
 
@@ -54,7 +57,7 @@ export const Hamburger = () => {
           text="Del spill"
           onClick={() => setDialog("share")}
         />
-        <div className={classes.spacer}></div>
+        <Content />
         <Action
           icon={MdOutlineAutorenew}
           text="Ny kamp"
