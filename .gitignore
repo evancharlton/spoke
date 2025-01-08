@@ -26,7 +26,6 @@ dev-dist
 
 # Terraform / OpenTofu resources
 .terraform
-.terraform.lock.hcl
 terraform.*.backup
 
 *storybook.log

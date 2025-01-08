@@ -15,7 +15,7 @@ export const TrieProvider = ({ children }: { children: React.ReactNode }) => {
   const [trie, setTrie] = useState<Trie | undefined>(undefined);
 
   useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}/${lang}/trie.json`.replace(/^\/\//, "/"))
+    fetch(`https://lister.evanc.no/spoke/${lang}/trie.json`)
       .then((res) => res.json() as Trie)
       .then((trie) => setTrie(trie))
       .catch((error) => setError(error));

@@ -14,9 +14,3 @@ free to play and ad-free.
 ## Contribution
 
 Please open a pull request (or issue) if you have an idea or find a bug.
-
-Please note that this currently depends on a private repo for the word list.
-You will need to ignore this when cloning and source your own word list from a
-data set.
-
-[ghost]: https://en.wikipedia.org/wiki/Ghost_(game)
