@@ -24,8 +24,4 @@ dev-dist
 *.sln
 *.sw?
 
-# Terraform / OpenTofu resources
-.terraform
-terraform.*.backup
-
 *storybook.log
