@@ -41,7 +41,7 @@ export default defineConfig({
               "pathname" in url &&
               typeof url.pathname === "string" &&
               url.pathname.endsWith(".json"),
-            handler: "NetworkFirst",
+            handler: "StaleWhileRevalidate",
           },
           {
             urlPattern: ({ url }) =>
