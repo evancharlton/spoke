@@ -1,7 +1,7 @@
 import "./App.css";
 import { HashRouter, Route, Routes } from "react-router";
 import Page from "./components/Page";
-import LanguageSelector from "./spa-components/LanguageSelector";
+import { LanguageProvider } from "./spa-components/LanguageSelector";
 import AppSetup from "./components/AppSetup";
 import OpponentSelector from "./components/OpponentSelector";
 import Play from "./components/Play";
@@ -14,8 +14,15 @@ function App() {
       <HashRouter>
         <Routes>
           <Route path="/" element={<Page />}>
-            <Route path="" element={<LanguageSelector />} />
-            <Route path=":lang" element={<AppSetup />}>
+            <Route path="" element={<LanguageProvider />} />
+            <Route
+              path=":lang"
+              element={
+                <LanguageProvider>
+                  <AppSetup />
+                </LanguageProvider>
+              }
+            >
               <Route path="" element={<OpponentSelector />} />
               <Route path=":opponentId" element={<OpponentProvider />}>
                 <Route path="" element={<Play />} />
